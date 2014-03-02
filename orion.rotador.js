@@ -53,7 +53,7 @@ Orion.prototype = {
                 img.style.width = json.ancho;
                 img.style.height = json.alto;
                 img.style.transition = ".75s";
-                this.appendChild(img);
+                elObjeto.appendChild(img);
             }
             
             var velocidad = 1000; //Por defecto, el tiempo de transición será de 1 segundo
@@ -72,7 +72,7 @@ Orion.prototype = {
                         break;
                 }
             
-            var imagenes = this.getElementsByTagName("img"), //Tomo a todas las imágenes anexadas
+            var imagenes = elObjeto.getElementsByTagName("img"), //Tomo a todas las imágenes anexadas
                 total = imagenes.length, //Calculo el total de imágenes anexadas
                 contador = 0; //El contador que nos permitirá rotar a las imágenes
                 
@@ -89,8 +89,8 @@ Orion.prototype = {
         }
 
         //Aplico el plugin en cada elemento
-        for (i = 0; i < this.total; i++)
-            aplicar.apply(this.objeto[i]);
+        var map = Array.prototype.map;
+        map.call(this.objeto, aplicar);
 
         return this; //Retornamos el objeto
     }
