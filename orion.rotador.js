@@ -75,5 +75,7 @@ Orion.prototype = {
         };
         
         setInterval(show, velocidad); //El plugin se ejecutará cada "velocidad" segundos de manera indefinida
+        
+        return this; //Retornamos al objeto
     }
 };
