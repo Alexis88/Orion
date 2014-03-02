@@ -17,7 +17,13 @@ var Orion = function(identificador){
                 this.objeto = document.getElementById(identificador.substr(1));
                 break;
             case ".": //Tomo al elemento por su Clase
-                this.objeto = document.getElementsByClassName(identificador.substr(1))[0];
+                this.objeto = document.getElementsByClassName ? document.getElementsByClassName(identificador.substr(1))[0] : document.querySelectorAll ? document.querySelectorAll(identificador)[0] : function(identificador){
+                    var todos = document.getElementsByTagName("*"),
+                        todosTotal = todos.length;
+                    for (i = 0; i < todosTotal; i++)
+                        if (todos[i].className == identificador.substr(1))
+                            return todos[i];
+                };
                 break;        
             default: //Tomo al elemento por su etiqueta
                 this.objeto = document.getElementsByTagName(identificador)[0];
