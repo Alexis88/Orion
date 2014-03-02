@@ -18,14 +18,18 @@ var Orion = function(identificador){
                 break;
             case ".": //Tomo al elemento por su Clase
                 this.objeto = document.getElementsByClassName ? document.getElementsByClassName(identificador.substr(1)) : document.querySelectorAll ? document.querySelectorAll(identificador) : function(identificador){
-                    var todos = document.getElementsByTagName("*"),
-                        todosTotal = todos.length,
-                        obj = [];
-                    for (i = 0; i < todosTotal; i++)
-                        if (todos[i].className == identificador.substr(1))
-                            obj.push(todos[i]);
-                    return obj;
-                };
+                        var todos = document.getElementsByTagName("*"),
+                            todosTotal = todos.length,
+                            forEach = Array.prototype.forEach,
+                            obj = [];
+
+                        forEach.call(todos, function(t){
+                            if (t.className == identificador.substr(1))
+                                obj.push(t);
+                        });
+
+                        return obj;
+                    };
                 break;        
             default: //Tomo al elemento por su etiqueta
                 this.objeto = document.getElementsByTagName(identificador);
