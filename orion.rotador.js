@@ -31,8 +31,6 @@ var Orion = function(identificador){
                 this.objeto = document.getElementsByTagName(identificador);
                 break;
         }
-
-        this.total = this.objeto.length;
         
         return this;
     }
