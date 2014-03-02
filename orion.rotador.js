@@ -19,8 +19,8 @@ var Orion = function(identificador){
             case ".": //Tomo al elemento por su Clase
                 this.objeto = document.getElementsByClassName(identificador.substr(1))[0];
                 break;        
-            default:
-                this.objeto = null;
+            default: //Tomo al elemento por su etiqueta
+                this.objeto = document.getElementsByTagName(identificador)[0];
                 break;
         }
         
