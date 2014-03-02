@@ -45,8 +45,8 @@ Orion.prototype = {
             img.src = json.imagenes[i];
             img.style.position = "absolute";
             img.style.opacity = 0;
-            img.style.width = "15em";
-            img.style.height = "8em";
+            img.style.width = json.ancho;
+            img.style.height = json.alto;
             img.style.transition = ".75s";
             this.objeto.appendChild(img);
         }
