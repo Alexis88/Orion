@@ -58,6 +58,7 @@ Orion.prototype = {
                 img.style.width = json.ancho;
                 img.style.height = json.alto;
                 img.style.transition = ".75s";
+                img.style.borderRadius = json.bordeRedondeado == "si" ? ".4em" : "0";
                 elObjeto.appendChild(img);
             }
             
