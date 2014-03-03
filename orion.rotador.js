@@ -96,8 +96,8 @@ Orion.prototype = {
         //Aplico el plugin en cada elemento
         switch (this.tipo){
             case 2:
-                var map = Array.prototype.map;
-                map.call(this.objeto, aplicar);
+                var forEach = Array.prototype.forEach;
+                forEach.call(this.objeto, aplicar);
                 break;
 
             case 1:
