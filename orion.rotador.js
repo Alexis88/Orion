@@ -15,6 +15,7 @@ var Orion = function(identificador){
         switch (identificador[0]) {
             case "#": //Tomo al elemento por su Id
                 this.objeto = document.getElementById(identificador.substr(1));
+                this.tipo = 1;
                 break;
             case ".": //Tomo al elemento por su Clase
                 this.objeto = document.getElementsByClassName ? document.getElementsByClassName(identificador.substr(1)) : document.querySelectorAll ? document.querySelectorAll(identificador) : function(identificador){
@@ -30,13 +31,13 @@ var Orion = function(identificador){
 
                         return obj;
                     };
+                this.tipo = 2;
                 break;        
             default: //Tomo al elemento por su etiqueta
                 this.objeto = document.getElementsByTagName(identificador);
+                this.tipo = 2;
                 break;
         }
-        
-        this.total = this.objeto.length;
 
         return this;
     }
@@ -93,12 +94,16 @@ Orion.prototype = {
         }
 
         //Aplico el plugin en cada elemento
-        if (this.total > 1){
-            var map = Array.prototype.map;
-            map.call(this.objeto, aplicar);
+        switch (this.tipo){
+            case 2:
+                var map = Array.prototype.map;
+                map.call(this.objeto, aplicar);
+                break;
+
+            case 1:
+                aplicar(this.objeto);
+                break;
         }
-        else
-            aplicar(this.objeto);
 
         return this; //Retornamos el objeto
     }
