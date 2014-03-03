@@ -36,6 +36,8 @@ var Orion = function(identificador){
                 break;
         }
         
+        this.total = this.objeto.length;
+
         return this;
     }
 };
@@ -91,8 +93,12 @@ Orion.prototype = {
         }
 
         //Aplico el plugin en cada elemento
-        var map = Array.prototype.map;
-        map.call(this.objeto, aplicar);
+        if (this.total > 1){
+            var map = Array.prototype.map;
+            map.call(this.objeto, aplicar);
+        }
+        else
+            aplicar(this.objeto);
 
         return this; //Retornamos el objeto
     }
