@@ -77,7 +77,7 @@ Orion.prototype = {
                         velocidad = 1500;
                         break;
                     default:
-                        velocidad = json.velocidad;
+                        velocidad = json.velocidad < 0 ? json.velocidad * -1000 : json.velocidad === 0 ? 1000 : json.velocidad * 1000;
                         break;
                 }
             
