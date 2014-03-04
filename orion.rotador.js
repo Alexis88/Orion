@@ -76,6 +76,9 @@ Orion.prototype = {
                     case "rapido":
                         velocidad = 1500;
                         break;
+                    default:
+                        velocidad = json.velocidad;
+                        break;
                 }
             
             var imagenes = elObjeto.getElementsByTagName("img"), //Tomo a todas las imágenes anexadas
