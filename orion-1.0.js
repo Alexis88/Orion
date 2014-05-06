@@ -23,12 +23,10 @@ var Orion = function(identificador){
                         document.querySelectorAll ? 
                         document.querySelectorAll(identificador) : 
                         function(identificador){
-                            var todos = document.getElementsByTagName("*"),
-                                todosTotal = todos.length,
-                                obj = [];
+                            var obj = [];
 
-                            Array.prototype.forEach.call(todos, function(t){
-                                if (t.className == identificador.substr(1))
+                            Array.prototype.forEach.call(document.getElementsByTagName("*"), function(item){
+                                if (item.className == identificador.substr(1))
                                     obj.push(t);
                             });
 
