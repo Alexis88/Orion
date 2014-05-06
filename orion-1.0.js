@@ -79,9 +79,9 @@ Orion.prototype = {
                     default:
                         velocidad = json.velocidad < 0 ? 
                                     json.velocidad * -1000 : 
-                        			json.velocidad === 0 ? 
-                        			1000 : 
-                        			json.velocidad * 1000;
+                                    json.velocidad === 0 ? 
+                                    1000 : 
+                                    json.velocidad * 1000;
                         break;
                 }
             
@@ -154,7 +154,7 @@ Orion.prototype = {
         return this; //Retornamos el objeto
     },
     clic: function(funcion){
-    	var aplicar = function(objeto){
+        var aplicar = function(objeto){
             if (document.addEventListener)
                 objeto.addEventListener("click", funcion, false);
             else
@@ -188,16 +188,16 @@ Orion.atenuar = function(objeto, velocidad){
 };
 
 Orion.emerger = function(objeto, velocidad){
-	if (objeto.style.opacity.length && Math.round(objeto.style.opacity) === 0){
+    if (objeto.style.opacity.length && Math.round(objeto.style.opacity) === 0){
         objeto.style.display = "block";
         var valor = 0, 
-        	delta = velocidad == "rapido" ? 0.1 : 0.01,
+            delta = velocidad == "rapido" ? 0.1 : 0.01,
             tiempo = velocidad == "rapido" ? 10 : 1,
             intervalo = setInterval(function(){ 
                 valor += delta; 
                 objeto.style.opacity = valor;
                 if (valor > 1) clearInterval(intervalo); 
-    		}, tiempo);
+            }, tiempo);
     }
 };
 
@@ -220,27 +220,27 @@ Orion.ajax = function(objeto){
     xhr.onreadystatechange = function(){
         if (xhr.readyState < 4){            
             if (salida){
-            	if (cargando){
-            		Orion.atenuar(salida, "lento");
-            		Orion.emerger(cargando, "lento");
-            	}
+                if (cargando){
+                    Orion.atenuar(salida, "lento");
+                    Orion.emerger(cargando, "lento");
+                }
                 else
-                	salida.innerHTML = "Cargando...";
+                    salida.innerHTML = "Cargando...";
             }
             else{
-            	if (cargando){
-            		Orion.atenuar(salidaOpcional, "lento");
-            		Orion.emerger(cargando, "lento");
-            	}
+                if (cargando){
+                    Orion.atenuar(salidaOpcional, "lento");
+                    Orion.emerger(cargando, "lento");
+                }
                 else
-                	salidaOpcional.innerHTML = "Cargando...";
+                    salidaOpcional.innerHTML = "Cargando...";
 
                 document.body.appendChild(salidaOpcional);
             }           
         }
         else{
             setTimeout(function(){
-            	if (cargando) Orion.atenuar(cargando, "lento");
+                if (cargando) Orion.atenuar(cargando, "lento");
                 var respuesta = xhr.status == 200 ? 
                                 xhr.responseText : 
                                 xhr.status == 404 ? 
@@ -248,11 +248,11 @@ Orion.ajax = function(objeto){
                                 "Error: " + xhr.status;
 
                 if (salida){
-                	Orion.emerger(salida, "lento");
+                    Orion.emerger(salida, "lento");
                     salida.innerHTML = respuesta;
                 }
                 else{
-                	Orion.emerger(salidaOpcional, "lento");
+                    Orion.emerger(salidaOpcional, "lento");
                     salidaOpcional.innerHTML = respuesta;
                 }
             }, 2000);
