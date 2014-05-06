@@ -18,19 +18,22 @@ var Orion = function(identificador){
                 this.tipo = 1;
                 break;
             case ".": //Tomo al elemento por su Clase
-                this.objeto = document.getElementsByClassName ? document.getElementsByClassName(identificador.substr(1)) : document.querySelectorAll ? document.querySelectorAll(identificador) : function(identificador){
-                        var todos = document.getElementsByTagName("*"),
-                            todosTotal = todos.length,
-                            forEach = Array.prototype.forEach,
-                            obj = [];
+                this.objeto = document.getElementsByClassName ? 
+                        document.getElementsByClassName(identificador.substr(1)) : 
+                        document.querySelectorAll ? 
+                        document.querySelectorAll(identificador) : 
+                        function(identificador){
+                            var todos = document.getElementsByTagName("*"),
+                                todosTotal = todos.length,
+                                obj = [];
 
-                        forEach.call(todos, function(t){
-                            if (t.className == identificador.substr(1))
-                                obj.push(t);
-                        });
+                            Array.prototype.forEach.call(todos, function(t){
+                                if (t.className == identificador.substr(1))
+                                    obj.push(t);
+                            });
 
-                        return obj;
-                    };
+                            return obj;
+                        };
                 this.tipo = 2;
                 break;        
             default: //Tomo al elemento por su etiqueta
@@ -57,7 +60,6 @@ Orion.prototype = {
                 img.style.opacity = 0;
                 img.style.width = json.ancho;
                 img.style.height = json.alto;
-                img.style.transition = ".75s";
                 img.style.borderRadius = json.bordeRedondeado == "si" ? ".4em" : "0";
                 elObjeto.appendChild(img);
             }
@@ -86,12 +88,12 @@ Orion.prototype = {
                 contador = 0; //El contador que nos permitirá rotar a las imágenes
                 
             //Mostramos a la primera imagen
-            imagenes[contador].style.opacity = 1;
+            Orion.emerger(imagenes[contador], velocidad);
             
             var show = function(){
-                imagenes[contador].style.opacity = 0; //Oculto a la imagen actual
+                Orion.atenuar(imagenes[contador], velocidad); //Muestro
                 contador = contador == total - 1 ? 0 : ++contador; //Actualizo el valor del contador
-                imagenes[contador].style.opacity = 1; //Muestro a la siguiente imagen en la secuencia
+                Orion.emerger(imagenes[contador], velocidad); //Oculto
             };
             
             setInterval(show, velocidad); //El plugin se ejecutará cada "velocidad" segundos de manera indefinida
@@ -99,16 +101,118 @@ Orion.prototype = {
 
         //Aplico el plugin en cada elemento
         switch (this.tipo){
-            case 2:
-                var forEach = Array.prototype.forEach;
-                forEach.call(this.objeto, aplicar);
-                break;
-
             case 1:
                 aplicar(this.objeto);
+                break;
+
+            case 2:
+                Array.prototype.forEach.call(this.objeto, aplicar);
                 break;
         }
 
         return this; //Retornamos el objeto
+    },
+    valor: function(){
+        switch (this.tipo){
+            case 1:
+                return this.objeto.value || this.objeto.innerHTML;
+                break;
+
+            case 2:
+                var valores = [];
+                Array.prototype.forEach.call(this.objeto, function(item){
+                    valores.push(item.value || item.innerHTML);
+                });
+                return valores;
+                break;
+        }
     }
+};
+
+Orion.atenuar = function(objeto, velocidad){
+    var valor = 1, 
+        delta = velocidad == "rapido" ? 0.1 : 0.01,
+        tiempo = velocidad == "rapido" ? 10 : 1,
+        intervalo = setInterval(function(){ 
+            valor -= delta; 
+            objeto.style.opacity = valor;
+            if (valor < 0){
+                clearInterval(intervalo); 
+                objeto.style.display = "none";
+            }
+        }, tiempo);
+};
+
+Orion.emerger = function(objeto, velocidad){
+    objeto.style.display = "block";
+    var valor = 0, 
+        delta = velocidad == "rapido" ? 0.1 : 0.01,
+        tiempo = velocidad == "rapido" ? 10 : 1,
+        intervalo = setInterval(function(){ 
+            valor += delta; 
+            objeto.style.opacity = valor;
+            if (valor > 1) clearInterval(intervalo); 
+        }, tiempo);
+};
+
+Orion.ajax = function(objeto){
+    var xhr = window.XMLHttpRequest ? 
+              new XMLHttpRequest() : 
+              new ActiveXObject("Microsoft.XMLHTTP") || 
+              new ActiveXObject("Msxml2.XMLHTTP"),
+        salidaOpcional = document.createElement("p");
+
+    for (var i in objeto){
+        switch (i){
+            case "url":
+                var url = objeto[i];
+            break;
+
+            case "datos":
+                var datos = objeto[i];
+            break;
+
+            case "cargando":
+                var cargando = objeto[i];
+            break;
+
+            case "metodo":
+                var metodo = objeto[i];
+            break;
+
+            case "salida":
+                var salida = objeto[i];
+            break;
+        }
+    }
+
+    url = metodo == "GET" ? url + "?" + datos : url;
+    datos = metodo == "GET" ? null : datos;
+
+    xhr.open(metodo || "GET", url, true);
+    xhr.onreadystatechange = function(){
+        if (xhr.readyState < 4){
+            var carga = Orion.emerger(cargando, "rapido") || "Cargando...";
+            if (salida)
+                salida.innerHTML = carga;
+            else{
+                salidaOpcional.innerHTML = carga;
+                document.body.appendChild(salidaOpcional);
+            }           
+        }
+        else{
+            if (cargando.length) Orion.atenuar(cargando, "rapido");
+            setTimeout(function(){
+                var respuesta = xhr.status == 200 ? xhr.responseText : xhr.status == 404 ? "La dirección brindada no existe" : "Error: " + xhr.status;
+
+                if (salida)
+                    salida.innerHTML = respuesta;
+                else
+                    salidaOpcional.innerHTML = respuesta;
+            }, 2000);
+        }
+    };
+
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.send(datos);
 };
