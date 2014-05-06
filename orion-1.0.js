@@ -206,9 +206,8 @@ Orion.ajax = function(objeto){
               new XMLHttpRequest() : 
               new ActiveXObject("Microsoft.XMLHTTP") || 
               new ActiveXObject("Msxml2.XMLHTTP"),
-        salidaOpcional = document.createElement("p");
-
-    var url = objeto.url,
+        salidaOpcional = document.createElement("p"),
+        url = objeto.url,
         datos = objeto.datos,
         cargando = objeto.cargando,
         metodo = objeto.metodo,
