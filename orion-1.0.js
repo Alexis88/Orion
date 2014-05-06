@@ -78,10 +78,10 @@ Orion.prototype = {
                         break;
                     default:
                         velocidad = json.velocidad < 0 ? 
-                        	    json.velocidad * -1000 : 
-                        	    json.velocidad === 0 ? 
-                        	    1000 : 
-                        	    json.velocidad * 1000;
+                        	    	json.velocidad * -1000 : 
+                        	    	json.velocidad === 0 ? 
+                        	    	1000 : 
+                        	    	json.velocidad * 1000;
                         break;
                 }
             
@@ -188,7 +188,7 @@ Orion.atenuar = function(objeto, velocidad){
 };
 
 Orion.emerger = function(objeto, velocidad){
-	if (objeto.style.opacity.length && Math.round(objeto.style.opacity) === 0){
+    if (objeto.style.opacity.length && Math.round(objeto.style.opacity) === 0){
         objeto.style.display = "block";
         var valor = 0, 
         	delta = velocidad == "rapido" ? 0.1 : 0.01,
