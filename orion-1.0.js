@@ -241,7 +241,11 @@ Orion.ajax = function(objeto){
         else{
             setTimeout(function(){
             	if (cargando) Orion.atenuar(cargando, "lento");
-                var respuesta = xhr.status == 200 ? xhr.responseText : xhr.status == 404 ? "La dirección brindada no existe" : "Error: " + xhr.status;
+                var respuesta = xhr.status == 200 ? 
+                                xhr.responseText : 
+                                xhr.status == 404 ? 
+                                "La dirección brindada no existe" : 
+                                "Error: " + xhr.status;
 
                 if (salida){
                 	Orion.emerger(salida, "lento");
