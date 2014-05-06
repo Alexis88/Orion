@@ -113,10 +113,16 @@ Orion.prototype = {
 
         return this; //Retornamos el objeto
     },
-    valor: function(){
+    valor: function(valor){
         switch (this.tipo){
             case 1:
+                if (valor)
+                    if ((/INPUT|TEXTAREA|SELECT-ONE/).test(this.objeto.tagName)) 
+                        this.objeto.value = valor;
+                    else
+                        this.objeto.innerHTML = valor;
                 return this.objeto.value || this.objeto.innerHTML;
+
                 break;
 
             case 2:
