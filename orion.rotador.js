@@ -150,6 +150,24 @@ Orion.prototype = {
         }
 
         return this; //Retornamos el objeto
+    },
+    clic: function(funcion){
+    	var aplicar = function(objeto){
+            if (document.addEventListener)
+                objeto.addEventListener("click", funcion, false);
+            else
+                objeto.attachEvent("onclick", funcion);
+        };
+
+        switch (this.tipo){
+            case 1:
+                aplicar(this.objeto);
+                break;
+
+            case 2:
+                Array.prototype.forEach.call(this.objeto, aplicar);
+                break;
+        }
     }
 };
 
@@ -164,19 +182,21 @@ Orion.atenuar = function(objeto, velocidad){
                 clearInterval(intervalo); 
                 objeto.style.display = "none";
             }
-        }, tiempo);
+    }, tiempo);
 };
 
 Orion.emerger = function(objeto, velocidad){
-    objeto.style.display = "block";
-    var valor = 0, 
-        delta = velocidad == "rapido" ? 0.1 : 0.01,
-        tiempo = velocidad == "rapido" ? 10 : 1,
-        intervalo = setInterval(function(){ 
-            valor += delta; 
-            objeto.style.opacity = valor;
-            if (valor > 1) clearInterval(intervalo); 
-        }, tiempo);
+	if (objeto.style.opacity.length){
+        objeto.style.display = "block";
+        var valor = 0, 
+        	delta = velocidad == "rapido" ? 0.1 : 0.01,
+            tiempo = velocidad == "rapido" ? 10 : 1,
+            intervalo = setInterval(function(){ 
+                valor += delta; 
+                objeto.style.opacity = valor;
+                if (valor > 1) clearInterval(intervalo); 
+    		}, tiempo);
+    }
 };
 
 Orion.ajax = function(objeto){
@@ -186,53 +206,50 @@ Orion.ajax = function(objeto){
               new ActiveXObject("Msxml2.XMLHTTP"),
         salidaOpcional = document.createElement("p");
 
-    for (var i in objeto){
-        switch (i){
-            case "url":
-                var url = objeto[i];
-            break;
-
-            case "datos":
-                var datos = objeto[i];
-            break;
-
-            case "cargando":
-                var cargando = objeto[i];
-            break;
-
-            case "metodo":
-                var metodo = objeto[i];
-            break;
-
-            case "salida":
-                var salida = objeto[i];
-            break;
-        }
-    }
+    var url = objeto.url,
+        datos = objeto.datos,
+        cargando = objeto.cargando,
+        metodo = objeto.metodo,
+        salida = objeto.salida;
 
     url = metodo == "GET" ? url + "?" + datos : url;
     datos = metodo == "GET" ? null : datos;
 
     xhr.open(metodo || "GET", url, true);
     xhr.onreadystatechange = function(){
-        if (xhr.readyState < 4){
-            var carga = Orion.emerger(cargando, "rapido") || "Cargando...";
-            if (salida)
-                salida.innerHTML = carga;
+        if (xhr.readyState < 4){            
+            if (salida){
+            	if (cargando){
+            		Orion.atenuar(salida, "lento");
+            		Orion.emerger(cargando, "lento");
+            	}
+                else
+                	salida.innerHTML = "Cargando...";
+            }
             else{
-                salidaOpcional.innerHTML = carga;
+            	if (cargando){
+            		Orion.atenuar(salidaOpcional, "lento");
+            		Orion.emerger(cargando, "lento");
+            	}
+                else
+                	salidaOpcional.innerHTML = "Cargando...";
+
                 document.body.appendChild(salidaOpcional);
             }           
         }
         else{
-            if (cargando.length) Orion.atenuar(cargando, "rapido");
             setTimeout(function(){
+            	if (cargando) Orion.atenuar(cargando, "lento");
                 var respuesta = xhr.status == 200 ? xhr.responseText : xhr.status == 404 ? "La dirección brindada no existe" : "Error: " + xhr.status;
 
-                if (salida)
+                if (salida){
+                	Orion.emerger(salida, "lento");
                     salida.innerHTML = respuesta;
-                else
+                }
+                else{
+                	Orion.emerger(salidaOpcional, "lento");
                     salidaOpcional.innerHTML = respuesta;
+                }
             }, 2000);
         }
     };
