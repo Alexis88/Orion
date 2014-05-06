@@ -126,6 +126,30 @@ Orion.prototype = {
                 return valores;
                 break;
         }
+    },
+    enfoque: function(funcionFoco, funcionSinFoco){
+        var aplicar = function(objeto){
+            if (document.addEventListener){
+                objeto.addEventListener("focus", funcionFoco, false);
+                objeto.addEventListener("blur", funcionSinFoco, false);
+            } 
+            else{
+                objeto.attachEvent("onfocus", funcionFoco);
+                objeto.attachEvent("onblur", funcionSinFoco);
+            }
+        };
+
+        switch (this.tipo){
+            case 1:
+                aplicar(this.objeto);
+                break;
+
+            case 2:
+                Array.prototype.forEach.call(this.objeto, aplicar);
+                break;
+        }
+
+        return this; //Retornamos el objeto
     }
 };
 
