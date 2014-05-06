@@ -91,9 +91,9 @@ Orion.prototype = {
             Orion.emerger(imagenes[contador], velocidad);
             
             var show = function(){
-                Orion.atenuar(imagenes[contador], velocidad); //Muestro
+                Orion.atenuar(imagenes[contador], velocidad); //Oculto
                 contador = contador == total - 1 ? 0 : ++contador; //Actualizo el valor del contador
-                Orion.emerger(imagenes[contador], velocidad); //Oculto
+                Orion.emerger(imagenes[contador], velocidad); //Muestro
             };
             
             setInterval(show, velocidad); //El plugin se ejecutará cada "velocidad" segundos de manera indefinida
