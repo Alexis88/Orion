@@ -2,7 +2,7 @@
  * Orion Library
  * ROTADOR DE IMÁGENES
  * Autor: Alexis López (@AlexisThrasher)
- * Fecha de elaboración: 01/03/2014 20:39:28
+ * Fecha de elaboración: 06/05/2014 04:01:24
  * Versión: 1.0
  * Licencia Pública GPLv3
  */
