@@ -1,6 +1,5 @@
 /*!
  * Orion Library
- * ROTADOR DE IMÁGENES
  * Autor: Alexis López (@AlexisThrasher)
  * Fecha de elaboración: 06/05/2014 04:01:24
  * Versión: 1.0
