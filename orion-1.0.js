@@ -27,7 +27,7 @@ var Orion = function(identificador){
 
                             Array.prototype.forEach.call(document.getElementsByTagName("*"), function(item){
                                 if (item.className == identificador.substr(1))
-                                    obj.push(t);
+                                    obj.push(item);
                             });
 
                             return obj;
