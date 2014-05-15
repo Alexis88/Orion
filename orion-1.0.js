@@ -610,7 +610,7 @@ Orion.primero = function(array){
 };
 
 Orion.ultimo = function(array){
-    return array.pop();
+    return array.[array.length - 1];
 };
 
 Orion.agregar = function(array, elementos){
@@ -646,6 +646,16 @@ Orion.quitar = function(array, viejos, nuevos){
             for (var i in nuevos)
                 array.push(nuevos[i]);
                 
+    return array;
+};
+
+Orion.quitarPrimero = function(array){
+    array.shift();
+    return array;
+};
+
+Orion.quitarUltimo = function(array){
+    array.pop()
     return array;
 };
 
