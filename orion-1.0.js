@@ -610,7 +610,7 @@ Orion.primero = function(array){
 };
 
 Orion.ultimo = function(array){
-    return array.[array.length - 1];
+    return array[array.length - 1];
 };
 
 Orion.agregar = function(array, elementos){
