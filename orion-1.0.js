@@ -465,8 +465,13 @@ Orion.prototype = {
         var aplicar = function(objeto){
             for (var i in json){
                 var propiedad = i.indexOf("-") > -1 ? function(i){
-                    var separar = i.split("-");
-                    return separar[0] + separar[1][0].toUpperCase() + separar[1].substr(1);
+                    var vieja = "-" + 
+                                i.substring(
+                                    i.search("-") + 1, 
+                                    i.search("-") + 2
+                                ),
+                        nueva = i.substr(i.search("-") + 1).toUpperCase();
+                    return i.replace(vieja, nueva);
                 } : i;
                 objeto.style[propiedad] = json[i];
             }
