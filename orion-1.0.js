@@ -464,46 +464,11 @@ Orion.prototype = {
     css: function(json){
         var aplicar = function(objeto){
             for (var i in json){
-                switch (i){
-                    case "width": objeto.style.width = json[i].toString();
-                    case "height": objeto.style.height = json[i].toString();
-                    case "background": objeto.style.background = json[i].toString();
-                    case "top": objeto.style.top = json[i].toString();
-                    case "left": objeto.style.left = json[i].toString();
-                    case "right": objeto.style.right = json[i].toString();
-                    case "bottom": objeto.style.bottom = json[i].toString();
-                    case "position": objeto.style.position = json[i].toString();
-                    case "margin": objeto.style.margin = json[i].toString();
-                    case "margin-top":case "marginTop": objeto.style.marginTop = json[i].toString();
-                    case "margin-left":case "marginLeft": objeto.style.marginLeft = json[i].toString();
-                    case "margin-right":case "marginRight": objeto.style.marginRight = json[i].toString();
-                    case "margin-bottom":case "marginBottom": objeto.style.marginBottom = json[i].toString();
-                    case "padding": objeto.style.padding = json[i].toString();
-                    case "padding-top":case "paddingTop": objeto.style.paddingTop = json[i].toString();
-                    case "padding-left":case "paddingLeft": objeto.style.paddingLeft = json[i].toString();
-                    case "padding-right":case "paddingRight": objeto.style.paddingRight = json[i].toString();
-                    case "padding-bottom":case "paddingBottom": objeto.style.paddingBottom = json[i].toString();
-                    case "border": objeto.style.border = json[i].toString();
-                    case "border-radius":case "borderRadius": objeto.style.borderRadius = json[i].toString();
-                    case "box-shadow":case "boxShadow": objeto.style.boxShadow = json[i].toString();
-                    case "color": objeto.style.color = json[i].toString();
-                    case "transition": objeto.style.transition = json[i].toString();
-                    case "text-align":case "textAlign": objeto.style.textAlign = json[i].toString();
-                    case "text-decoration":case "textDecoration": objeto.style.textDecoration = json[i].toString();
-                    case "line-height":case "lineHeight": objeto.style.lineHeight = json[i].toString();
-                    case "font-family":case "fontFamily": objeto.style.fontFamily = json[i].toString();
-                    case "font-size":case "fontSize": objeto.style.fontSize = json[i].toString();
-                    case "font-weight":case "fontWeight": objeto.style.fontWeight = json[i].toString();
-                    case "font-style":case "fontStyle": objeto.style.fontStyle = json[i].toString();
-                    case "display": objeto.style.display = json[i].toString();
-                    case "vertical-align":case "verticalAlign": objeto.style.verticalAlign = json[i].toString();
-                    case "list-style":case "listStyle": objeto.style.listStyle = json[i].toString();
-                    case "cursor": objeto.style.cursor = json[i].toString();
-                    case "z-index":case "zIndex": objeto.style.zIndex = json[i].toString();
-                    case "opacity": objeto.style.opacity = json[i].toString();
-                    case "visibility": objeto.style.visibility = json[i].toString();
-                    case "float": objeto.style.float = json[i].toString();
-                }
+                var propiedad = i.indexOf("-") > -1 ? function(i){
+                    var separar = i.split("-");
+                    return separar[0] + separar[1][0].toUpperCase() + separar[1].substr(1);
+                } : i;
+                objeto.style[propiedad] = json[i];
             }
         };
 
