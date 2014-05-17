@@ -464,7 +464,7 @@ Orion.prototype = {
     css: function(json){
         var aplicar = function(objeto){
             for (var i in json){
-                var propiedad = i.indexOf("-") > -1 ? function(i){
+                var propiedad = i.indexOf("-") > -1 ? function(){
                     var vieja = "-" + 
                                 i.substring(
                                     i.search("-") + 1, 
@@ -657,4 +657,14 @@ Orion.juntar = function(array, union){
 
 Orion.separar = function(array, union){
     return union ? array.split(union) : array;  
-}
+};
+
+Orion.combinar = function(array, arrays){
+    return array.concat((function(){
+        var retorno = [];
+        for (var i in arrays)
+            for (var j in arrays[i])
+                retorno.push(arrays[i][j]);
+        return retorno;
+    })());
+};
