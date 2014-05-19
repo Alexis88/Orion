@@ -6,7 +6,7 @@
  * Licencia Pública GPLv3
  */
  
-var $ = ƒ = O = Orion = function(identificador){
+var $ = O = Orion = function(identificador){
     if (identificador) {
         if (window === this)
             return new Orion(identificador);
