@@ -349,7 +349,7 @@ Orion.prototype = {
                 break;
 
             case 2:
-                return Array.prototype.forEach.call(this.objeto, aplicar);
+                return Array.prototype.map.call(this.objeto, aplicar).indexOf(false) == -1 ? true : false;
                 break;
         }
     },
@@ -365,7 +365,7 @@ Orion.prototype = {
                 break;
 
             case 2:
-                return Array.prototype.forEach.call(this.objeto, aplicar);
+                return Array.prototype.map.call(this.objeto, aplicar).indexOf(false) == -1 ? true : false;
                 break;
         }
     },
@@ -381,9 +381,10 @@ Orion.prototype = {
                 break;
 
             case 2:
-                return Array.prototype.forEach.call(this.objeto, aplicar);
+                return Array.prototype.map.call(this.objeto, aplicar).indexOf(false) == -1 ? true : false;
                 break;
         }
+        return respuesta;
     },
 
     encima: function(entrada, salida){
