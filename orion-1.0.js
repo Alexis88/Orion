@@ -340,7 +340,7 @@ Orion.prototype = {
 
     esNumerico: function(){
         var aplicar = function(objeto){
-                return !isNaN(objeto.value) && objeto.value.length ? true : false;
+                return !isNaN(parseFloat(objeto.value)) && isFinite(objeto.value);
             };
 
         switch (this.tipo){
@@ -349,14 +349,14 @@ Orion.prototype = {
                 break;
 
             case 2:
-                return Array.prototype.map.call(this.objeto, aplicar).indexOf(false) == -1 ? true : false;
+                return Array.prototype.map.call(this.objeto, aplicar).indexOf(false) == -1;
                 break;
         }
     },
 
     esTexto: function(){
         var aplicar = function(objeto){
-                return /\s(?=[a-zA-ZÁÉÍÓÚáéíóúÑñÜü]+)/g.test(objeto.value) && objeto.value.length ? true : false;
+                return /\s(?=[a-zA-ZÁÉÍÓÚáéíóúÑñÜü]+)/g.test(objeto.value) && objeto.value.length;
             };
 
         switch (this.tipo){
@@ -365,14 +365,14 @@ Orion.prototype = {
                 break;
 
             case 2:
-                return Array.prototype.map.call(this.objeto, aplicar).indexOf(false) == -1 ? true : false;
+                return Array.prototype.map.call(this.objeto, aplicar).indexOf(false) == -1;
                 break;
         }
     },
 
     email: function(){
         var aplicar = function(objeto){
-                return /^[\w\._-]+@[\w\.-]+\.[\w\.-]{2,3}(\.[\w\.-]{2,3})?$/.test(objeto.value.toLowerCase()) && objeto.value.length ? true : false;
+                return /^[\w\._-]+@[\w\.-]+\.[\w\.-]{2,3}(\.[\w\.-]{2,3})?$/.test(objeto.value.toLowerCase()) && objeto.value.length;
             };
 
         switch (this.tipo){
@@ -381,7 +381,7 @@ Orion.prototype = {
                 break;
 
             case 2:
-                return Array.prototype.map.call(this.objeto, aplicar).indexOf(false) == -1 ? true : false;
+                return Array.prototype.map.call(this.objeto, aplicar).indexOf(false) == -1;
                 break;
         }
         return respuesta;
