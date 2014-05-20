@@ -356,7 +356,7 @@ Orion.prototype = {
 
     esTexto: function(){
         var aplicar = function(objeto){
-                return /\s(?=[a-zA-ZÁÉÍÓÚáéíóúÑñÜü]+)/g.test(objeto.value) && objeto.value.length;
+                return /^[a-zA-ZÁÉÍÓÚáéíóúÑñÜü\s]+$/g.test(objeto.value) && objeto.value.length;
             };
 
         switch (this.tipo){
