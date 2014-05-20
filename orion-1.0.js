@@ -372,7 +372,7 @@ Orion.prototype = {
 
     email: function(){
         var aplicar = function(objeto){
-                return /^[\w\._-]+@[\w\.-]+\.[\w\.-]{2,3}(\.[\w\.-]{2,3})?$/.test(objeto.value.toLowerCase()) && objeto.value.length;
+                return /^[\w\.\-_]+@[\w\.\-_]+\.[\w\.\-_]{2,6}(\.[\w\.\-_]{2,6})?$/.test(objeto.value.toLowerCase()) && objeto.value.length;
             };
 
         switch (this.tipo){
@@ -384,7 +384,6 @@ Orion.prototype = {
                 return Array.prototype.map.call(this.objeto, aplicar).indexOf(false) == -1;
                 break;
         }
-        return respuesta;
     },
 
     encima: function(entrada, salida){
