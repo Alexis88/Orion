@@ -667,16 +667,22 @@ Orion.combinar = function(array, arrays){
     })());
 };
 
-Orion.rango = function(array, inicio, fin, pasos){
+Orion.rango = function(inicio, fin, pasos){
+    Orion.rango.array = Orion.rango.array || [];
     if (typeof inicio === typeof fin){
-        array.push(typeof inicio === "string" ? inicio[0] : inicio);
+        Orion.rango.array.push(typeof inicio === "string" ? inicio[0] : inicio);
         pasos = inicio > fin ? 
                !isNaN(pasos) && isFinite(pasos) && pasos < 0 ? pasos : -pasos || -1 : 
                !isNaN(pasos) && isFinite(pasos) ? pasos : 1;
         inicio = typeof inicio === "string" ? 
                 String.fromCharCode(inicio.charCodeAt(0) + pasos) : 
                 inicio += pasos;
-        return (pasos > 0 && inicio <= fin) || (pasos < 0 && inicio >= fin) ? this.rango(array, inicio, fin, pasos) : array;
+        return (pasos > 0 && inicio <= fin) || (pasos < 0 && inicio >= fin) ? 
+                this.rango(inicio, fin, pasos) : (function(){
+                    var aux = Orion.rango.array;
+                    Orion.rango.array = [];
+                    return aux;
+               })();
     }
     return false;
 };
