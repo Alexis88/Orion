@@ -668,12 +668,11 @@ Orion.combinar = function(array, arrays){
 };
 
 Orion.rango = function(array, inicio, fin, pasos){
-     if (typeof inicio === "string"){
-        array.push(inicio);
+    array.push(inicio);
+    if (typeof inicio === "string"){
         inicio = String.fromCharCode(inicio.charCodeAt(0) + (pasos || 1));
         return inicio <= fin ? this.rango(array, inicio, fin, pasos) : array;
     }
-    else array.push(inicio);
     inicio += pasos || 1;
     return inicio <= fin ? this.rango(array, inicio, fin, pasos) : array;
 };
