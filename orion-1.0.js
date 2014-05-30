@@ -259,10 +259,8 @@ Orion.prototype = {
                     intervalo = setInterval(function(){ 
                         valor += delta; 
                         objeto.style.opacity = valor;
-                        if (valor > 1){
-                            clearInterval(intervalo); 
-                            objeto.style.display = "block";
-                        }
+                        if (valor > 1)
+                            clearInterval(intervalo);
                     }, tiempo);
             }
         };
@@ -667,4 +665,15 @@ Orion.combinar = function(array, arrays){
                 retorno.push(arrays[i][j]);
         return retorno;
     })());
+};
+
+Orion.rango = function(array, inicio, fin, pasos){
+     if (typeof inicio === "string"){
+        array.push(inicio);
+        inicio = String.fromCharCode(inicio.charCodeAt(0) + (pasos || 1));
+        return inicio <= fin ? this.rango(array, inicio, fin, pasos) : array;
+    }
+    else array.push(inicio);
+    inicio += pasos || 1;
+    return inicio <= fin ? this.rango(array, inicio, fin, pasos) : array;
 };
