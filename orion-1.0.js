@@ -680,9 +680,13 @@ Orion.rango = function(inicio, fin, pasos){
 
     Orion.rango.array.push(inicio);
 
-    pasos = inicio > fin ? 
-           !isNaN(pasos) && isFinite(pasos) && pasos < 0 ? pasos : -pasos || -1 : 
-           !isNaN(pasos) && isFinite(pasos) ? pasos : 1;
+    if (!isNaN(pasos) && isFinite(pasos))
+        pasos = inicio > fin ? 
+                Number(pasos > 0 ? -pasos || -1 : pasos || -1) : 
+                Number(pasos < 0 ? -pasos || 1 : pasos || 1);
+    else
+        pasos = inicio > fin ? -1 : 1;
+
     inicio = typeof inicio === "string" ? 
             String.fromCharCode(inicio.charCodeAt(0) + pasos) : 
             inicio += pasos;
