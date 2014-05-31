@@ -669,20 +669,28 @@ Orion.combinar = function(array, arrays){
 
 Orion.rango = function(inicio, fin, pasos){
     Orion.rango.array = Orion.rango.array || [];
-    if (typeof inicio === typeof fin){
-        Orion.rango.array.push(typeof inicio === "string" ? inicio[0] : inicio);
-        pasos = inicio > fin ? 
-               !isNaN(pasos) && isFinite(pasos) && pasos < 0 ? pasos : -pasos || -1 : 
-               !isNaN(pasos) && isFinite(pasos) ? pasos : 1;
-        inicio = typeof inicio === "string" ? 
-                String.fromCharCode(inicio.charCodeAt(0) + pasos) : 
-                inicio += pasos;
-        return (pasos > 0 && inicio <= fin) || (pasos < 0 && inicio >= fin) ? 
-                this.rango(inicio, fin, pasos) : (function(){
-                    var aux = Orion.rango.array;
-                    Orion.rango.array = [];
-                    return aux;
-               })();
+        
+    if (typeof inicio !== typeof fin){
+        inicio = !isNaN(Number(inicio)) && isFinite(Number(inicio)) ? Number(inicio) : 0;
+        fin = !isNaN(Number(fin)) && isFinite(Number(fin)) ? Number(fin) : 0;
     }
-    return false;
+
+    if (typeof inicio === "string") inicio = inicio[0].toLowerCase();
+    if (typeof fin === "string") fin = fin[0].toLowerCase();
+
+    Orion.rango.array.push(inicio);
+
+    pasos = inicio > fin ? 
+           !isNaN(pasos) && isFinite(pasos) && pasos < 0 ? pasos : -pasos || -1 : 
+           !isNaN(pasos) && isFinite(pasos) ? pasos : 1;
+    inicio = typeof inicio === "string" ? 
+            String.fromCharCode(inicio.charCodeAt(0) + pasos) : 
+            inicio += pasos;
+
+    return (pasos > 0 && inicio <= fin) || (pasos < 0 && inicio >= fin) ? 
+            this.rango(inicio, fin, pasos) : (function(){
+                var aux = Orion.rango.array;
+                Orion.rango.array = [];
+                return aux;
+            })();
 };
