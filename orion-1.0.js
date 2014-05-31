@@ -688,8 +688,8 @@ Orion.rango = function(inicio, fin, pasos){
         pasos = inicio > fin ? -1 : 1;
 
     inicio = typeof inicio === "string" ? 
-            String.fromCharCode(inicio.charCodeAt(0) + pasos) : 
-            inicio += pasos;
+             String.fromCharCode(inicio.charCodeAt(0) + pasos) : 
+             inicio += pasos;
 
     return (pasos > 0 && inicio <= fin) || (pasos < 0 && inicio >= fin) ? 
             this.rango(inicio, fin, pasos) : (function(){
