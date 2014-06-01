@@ -675,8 +675,10 @@ Orion.rango = function(inicio, fin, pasos){
         fin = !isNaN(Number(fin)) && isFinite(Number(fin)) ? Number(fin) : 0;
     }
 
-    if (typeof inicio === "string") inicio = inicio[0].toLowerCase();
-    if (typeof fin === "string") fin = fin[0].toLowerCase();
+    if (typeof inicio === "string") 
+        inicio = !isNaN(Number(inicio)) && isFinite(Number(inicio)) ? Number(inicio) : inicio[0].toLowerCase();
+    if (typeof fin === "string")
+        fin = !isNaN(Number(fin)) && isFinite(Number(fin)) ? Number(fin) : fin[0].toLowerCase();
 
     Orion.rango.array.push(inicio);
 
