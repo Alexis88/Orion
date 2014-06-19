@@ -711,3 +711,8 @@ Orion.rango = function(inicio, fin, pasos){
                 return aux;
             })();
 };
+
+Orion.partir = function(array, partes){
+    for (var i = 0, l = array.length, nuevo = []; i < l; nuevo.push(array.slice(i, i += (partes || 1))));
+        return nuevo;
+};
