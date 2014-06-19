@@ -598,15 +598,13 @@ Orion.ultimo = function(array){
     return array[array.length - 1];
 };
 
-Orion.agregar = function(array, elementos){
-    if (elementos)
-        if (typeof elementos !== "object")
-            array.push(elementos);
-        else
-            for (var i in elementos)
-                array.push(elementos[i]);  
-
-    return array;
+Orion.agregar = function(){
+    var array = Array.prototype.slice.call(arguments)[0];
+    return Array.prototype.reduce.call(arguments, function(previo, actual){
+        if (typeof actual !== "object")
+            return array.push(actual);
+        return array.concat(actual);
+    });
 };
 
 Orion.quitar = function(array, viejos, nuevos){  
