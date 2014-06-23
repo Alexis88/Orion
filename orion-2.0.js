@@ -585,7 +585,7 @@ Orion.ajax = function(json){
         }
     };
 
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    if (metodo.toUpperCase() == "POST") xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.send(datos);
 };
 
