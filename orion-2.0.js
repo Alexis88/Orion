@@ -12,7 +12,8 @@ var $ = O = Orion = function(identificador){
             return new Orion(identificador);
 
         if (typeof identificador === "string")
-            identificador.trim();
+            if (String.prototype.trim) identificador.trim();
+            else identificador.replace(/^\s+|\s+$/g, "");
 
         var porId = function(id){
                 return {
