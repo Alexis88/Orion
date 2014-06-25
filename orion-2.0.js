@@ -12,7 +12,7 @@ var $ = O = Orion = function(identificador){
             return new Orion(identificador);
 
         if (typeof identificador === "string")
-            identificador = identificador.trim();
+            identificador.trim();
 
         var porId = function(id){
                 return {
