@@ -7,47 +7,90 @@
  */
  
 var $ = O = Orion = function(identificador){
-    if (identificador) {
+    if (identificador){
         if (window === this)
             return new Orion(identificador);
-            
-        switch (identificador[0]) {
-            case "#": //Tomo al elemento por su Id
-                this.objeto = document.getElementById(identificador.substr(1));
-                this.tipo = 1;
-                break;
-            case ".": //Tomo al elemento por su Clase
-                this.objeto = document.getElementsByClassName ? 
-                        document.getElementsByClassName(identificador.substr(1)) : 
-                        document.querySelectorAll ? 
-                        document.querySelectorAll(identificador) : 
-                        function(identificador){
-                            var obj = [];
 
-                            Array.prototype.forEach.call(document.getElementsByTagName("*"), function(item){
-                                if (item.className == identificador.substr(1))
-                                    obj.push(item);
-                            });
+        if (typeof identificador === "string")
+            identificador = identificador.trim();
 
-                            return obj;
-                        };
-                this.tipo = 2;
-                break;        
-            default: //Tomo al elemento por su etiqueta
-                this.objeto = document.getElementsByTagName(identificador);
-                this.tipo = 2;
-                if (!this.objeto.length){
-                    var iden = identificador.tagName || identificador,
+        var porId = function(id){
+                return {
+                    objeto: document.getElementById(id.substr(1)),
+                    tipo: 1
+                };
+            },
+            porClase = function(clase){
+                return {
+                    objeto: document.getElementsByClassName ? 
+                            document.getElementsByClassName(clase.substr(1)) : 
+                            document.querySelectorAll ? 
+                            document.querySelectorAll(clase) : 
+                            function(clase){
+                                var obj = [];
+                                if (Array.prototype.forEach)
+                                    Array.prototype.forEach.call(document.getElementsByTagName("*"), function(item){
+                                        if (item.className == clase.substr(1))
+                                            obj.push(item);
+                                    });
+                                else{
+                                    var elementos = document.getElementsByTagName("*"),
+                                        total = elementos.length;
+                                    for (var i = 0; i < total; i++)
+                                        if (elementos[i].className == clase.substr(1))
+                                            obj.push(elementos[i]);
+                                }
+                                return obj;
+                            },
+                    tipo: 2
+                };
+            },
+            porElemento = function(elemento){
+                var objeto = document.getElementsByTagName(elemento), 
+                    tipo = 2;
+                if (objeto.length){
+                    var iden = elemento.tagName || elemento,
                         lista = document.getElementsByTagName(iden.toLowerCase()),
                         total = lista.length;
                     for (i = 0; i < total; i++)
-                        if (lista[i] === identificador){
-                            this.objeto = lista[i];
-                            this.tipo = 1;
+                        if (lista[i] === elemento){
+                            objeto = lista[i];
+                            tipo = 1;
                             break;
                         }
                 }
-                break;
+                return {
+                    objeto: objeto,
+                    tipo: tipo
+                };
+            };
+        
+        if (/\s|\[/.test(identificador) && typeof identificador === "string"){
+            var idPos = identificador.substr(identificador.lastIndexOf(" ") + 1);
+            if (idPos.search("#") > -1){
+                this.objeto = document.querySelector(identificador);
+                this.tipo = 1;
+            }                
+            else{
+                this.objeto = document.querySelectorAll(identificador);
+                this.tipo = 2;
+            }
+        }
+        else{
+            var atributos;
+            switch (identificador[0]){
+                case "#": //Tomo al elemento por su Id
+                    atributos = porId(identificador);
+                    break;
+                case ".": //Tomo al elemento por su Clase
+                    atributos = porClase(identificador);
+                    break;        
+                default: //Tomo al elemento por su etiqueta
+                    atributos = porElemento(identificador);
+                    break;
+            }
+            this.objeto = atributos.objeto;
+            this.tipo = atributos.tipo;
         }
 
         return this;
