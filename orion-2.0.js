@@ -760,3 +760,29 @@ Orion.partir = function(array, partes){
     for (var i = 0, l = array.length, nuevo = []; i < l; nuevo.push(array.slice(i, i += (partes || 1))));
         return nuevo;
 };
+
+Orion.unico = function(array){
+    var array_filtrado = [];
+    if (!Array.prototype.forEach){
+        var total = array.length,
+            repeticiones = 0;
+        for (var i = 0; i < total; i++)
+            if (!Array.prototype.indexOf){
+                repeticiones = 0;
+                for (var j = i + 1; j < total; j++)
+                    if (array[i] == array[j])
+                        repeticiones++;
+                if (!repeticiones)
+                    array_filtrado.push(array[i]);
+            }
+            else
+                if (array_filtrado.indexOf(array[i]) == -1)
+                    array_filtrado.push(array[i]);
+    }
+    else
+        array.forEach(function(valor){
+            if (array_filtrado.indexOf(valor) == -1)
+                array_filtrado.push(valor);
+        });
+    return array_filtrado;
+};
