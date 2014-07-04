@@ -770,8 +770,10 @@ Orion.unico = function(array){
             if (!Array.prototype.indexOf){
                 repeticiones = 0;
                 for (var j = i + 1; j < total; j++)
-                    if (array[i] == array[j])
+                    if (array[i] == array[j]){
                         repeticiones++;
+                        break;
+                    }
                 if (!repeticiones)
                     array_filtrado.push(array[i]);
             }
