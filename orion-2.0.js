@@ -764,17 +764,16 @@ Orion.partir = function(array, partes){
 Orion.unico = function(array){
     var array_filtrado = [];
     if (!Array.prototype.forEach){
-        var total = array.length,
-            repeticiones = 0;
+        var total = array.length;
         for (var i = 0; i < total; i++)
             if (!Array.prototype.indexOf){
-                repeticiones = 0;
+                repeticiones = false;
                 for (var j = i + 1; j < total; j++)
                     if (array[i] == array[j]){
-                        repeticiones++;
+                        repeticiones = true;
                         break;
                     }
-                if (!repeticiones)
+                if (repeticiones)
                     array_filtrado.push(array[i]);
             }
             else
