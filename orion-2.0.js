@@ -49,18 +49,7 @@ var $ = O = Orion = function(identificador){
             porElemento = function(elemento){
                 var objeto = document.getElementsByTagName(elemento), 
                     tipo = 2;
-                if (objeto.length){
-                    var iden = elemento.tagName || elemento,
-                        lista = document.getElementsByTagName(iden.toLowerCase()),
-                        total = lista.length;
-                    for (var i = 0; i < total; i++)
-                        if (lista[i] === elemento){
-                            objeto = lista[i];
-                            tipo = 1;
-                            break;
-                        }
-                }
-                else{
+                if (!objeto.length){
                     var elementos = document.getElementsByTagName("*"),
                         total = elementos.length;
                     for (var i = 0; i < total; i++)
@@ -599,7 +588,6 @@ Orion.prototype = {
 
 //AJAX
 Orion.ajax = function(json){
-    console.log(json);
     var xhr = window.XMLHttpRequest ? 
               new XMLHttpRequest() : 
               new ActiveXObject("Microsoft.XMLHTTP") || 
