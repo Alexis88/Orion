@@ -767,7 +767,7 @@ Orion.unico = function(array){
         var total = array.length;
         for (var i = 0; i < total; i++)
             if (!Array.prototype.indexOf){
-                repeticiones = false;
+                var repeticiones = false;
                 for (var j = i + 1; j < total; j++)
                     if (array[i] == array[j]){
                         repeticiones = true;
