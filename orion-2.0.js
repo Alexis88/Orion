@@ -817,12 +817,7 @@ Orion.enArray = function(dato, array, estricto){
                 if (array.indexOf(dato) > -1) respuesta = true;
             }
             else{
-                for (; i < total; i++){
-                    if (dato == array[i]){
-                        respuesta = true;
-                        break;
-                    }
-                }
+                if (dato in array) respuesta = true;
             }
         }
     }
