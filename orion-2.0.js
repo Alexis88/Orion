@@ -787,10 +787,10 @@ Orion.unico = function(array){
     return array_filtrado;
 };
 
-Orion.enArray = function(dato, array, modo){
+Orion.enArray = function(dato, array, estricto){
     var respuesta = false;
   
-    modo = modo === true ? true : false;
+    estricto = estricto === true ? true : false;
   
     if (Object.prototype.toString.call(array) === "[object Array]"){
         var i = 0,
@@ -798,7 +798,7 @@ Orion.enArray = function(dato, array, modo){
       
         if (!Array.prototype.indexOf){
             for (; i < total; i++){
-                if (modo){
+                if (estricto){
                     if (dato === array[i]){
                         respuesta = true;
                         break;
@@ -813,7 +813,7 @@ Orion.enArray = function(dato, array, modo){
             }
         }
         else{
-            if (modo){
+            if (estricto){
                 if (array.indexOf(dato) > -1) respuesta = true;
             }
             else{
