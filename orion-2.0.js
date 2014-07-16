@@ -1,5 +1,5 @@
 /*!
- * Orion Library
+ * Orion JavaScript Library
  * Autor: Alexis López (@AlexisThrasher)
  * Fecha de elaboración: 17/06/2014 23:05:40
  * Versión: 2.0
