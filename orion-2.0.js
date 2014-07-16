@@ -1,5 +1,5 @@
 /*!
- * Orion JavaScript Library
+ * Orion Library
  * Autor: Alexis López (@AlexisThrasher)
  * Fecha de elaboración: 17/06/2014 23:05:40
  * Versión: 2.0
@@ -785,4 +785,47 @@ Orion.unico = function(array){
                 array_filtrado.push(valor);
         });
     return array_filtrado;
+};
+
+Orion.enArray = function(dato, array, modo){
+    var respuesta = false;
+  
+    modo = modo === true ? true : false;
+  
+    if (Object.prototype.toString.call(array) === "[object Array]"){
+        var i = 0,
+            total = array.length;
+      
+        if (!Array.prototype.indexOf){
+            for (; i < total; i++){
+                if (modo){
+                    if (dato === array[i]){
+                        respuesta = true;
+                        break;
+                    }
+                }
+                else{
+                    if (dato == array[i]){
+                        respuesta = true;
+                        break;
+                    }
+                }
+            }
+        }
+        else{
+            if (modo){
+                if (array.indexOf(dato) > -1) respuesta = true;
+            }
+            else{
+                for (; i < total; i++){
+                    if (dato == array[i]){
+                        respuesta = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+  
+    return respuesta;
 };
