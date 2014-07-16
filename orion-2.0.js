@@ -797,7 +797,7 @@ Orion.enArray = function(dato, array, estricto){
             total = array.length;
       
         if (!Array.prototype.indexOf){
-            for (; i < total; i++){
+            for (; i < total;){
                 if (estricto){
                     if (dato === array[i]){
                         respuesta = true;
@@ -817,7 +817,12 @@ Orion.enArray = function(dato, array, estricto){
                 if (array.indexOf(dato) > -1) respuesta = true;
             }
             else{
-                if (dato in array) respuesta = true;
+                for (; i < total;){
+                    if (dato == array[i]){
+                        respuesta = true;
+                        break;
+                    }
+                }
             }
         }
     }
