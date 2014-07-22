@@ -636,11 +636,11 @@ Orion.ajax = function(json){
 
 //ARRAYS
 Orion.primero = function(array){
-    return array[0];
+    return Object.prototype.toString.call(array) === "[object Array]" ? array[0] : false;
 };
 
 Orion.ultimo = function(array){
-    return array[array.length - 1];
+    return Object.prototype.toString.call(array) === "[object Array]" ? array[array.length - 1] : false;
 };
 
 Orion.agregar = function(){
@@ -653,68 +653,86 @@ Orion.agregar = function(){
 };
 
 Orion.quitar = function(array, viejos, nuevos){  
-    if (viejos)
-        if (typeof viejos !== "object"){
-            var pos = array.indexOf(viejos);
-            if (pos > -1)
-                array.splice(pos, 1);
-        }
-        else
-            for (var i in viejos)
-                while (array.indexOf(viejos[i]) > -1){
-                    var pos = array.indexOf(viejos[i]);
-                    if (pos > -1)
-                        array.splice(pos, 1);
-                }
+    if (Object.prototype.toString.call(array) === "[object Array]"){
+        if (viejos)
+            if (typeof viejos !== "object"){
+                var pos = array.indexOf(viejos);
+                if (pos > -1)
+                    array.splice(pos, 1);
+            }
+            else
+                for (var i in viejos)
+                    while (array.indexOf(viejos[i]) > -1){
+                        var pos = array.indexOf(viejos[i]);
+                        if (pos > -1)
+                            array.splice(pos, 1);
+                    }
 
-    if (nuevos)
-        if (typeof nuevos !== "object")
-            array.push(nuevos);
-        else
-            for (var i in nuevos)
-                array.push(nuevos[i]);
-                
-    return array;
+        if (nuevos)
+            if (typeof nuevos !== "object")
+                array.push(nuevos);
+            else
+                for (var i in nuevos)
+                    array.push(nuevos[i]);
+                    
+        return array;
+    }
+    return false;
 };
 
 Orion.quitarPrimero = function(array){
-    array.shift();
-    return array;
+    if (Object.prototype.toString.call(array) === "[object Array]"){
+        array.shift();
+        return array;
+    }
+    return false;
 };
 
 Orion.quitarUltimo = function(array){
-    array.pop()
-    return array;
+    if (Object.prototype.toString.call(array) === "[object Array]"){
+        array.pop()
+        return array;
+    }
+    return false;
 };
 
 Orion.copiar = function(array, inicial, final){
-    var i = array.indexOf(inicial),
-        f = array.indexOf(final);
+    if (Object.prototype.toString.call(array) === "[object Array]"){
+        var i = array.indexOf(inicial),
+            f = array.indexOf(final);
 
-    if (i > -1 && f > -1)
-        return array.slice(array.indexOf(inicial), array.indexOf(final) + 1);
-    else if (i > -1 && f == -1 || !final)
-        return array.slice(array.indexOf(inicial));
-    else
-        return array.slice();
+        if (i > -1 && f > -1)
+            return array.slice(array.indexOf(inicial), array.indexOf(final) + 1);
+        else if (i > -1 && f == -1 || !final)
+            return array.slice(array.indexOf(inicial));
+        else
+            return array.slice();
+    }
+    return false
 };
 
 Orion.ordenarAsc = function(array){
-    return array.sort();
+    return Object.prototype.toString.call(array) === "[object Array]" ? array.sort() : false;
 };
 
 Orion.ordenarDesc = function(array){
-    return array.sort(function(a, b){
-        return b - a;
-    });
+    if (Object.prototype.toString.call(array) === "[object Array]")
+        return array.sort(function(a, b){
+            return b - a;
+        });
+    return false
 };
 
 Orion.juntar = function(array, union){
-    return union ? array.join(union) : array.join();
+    if (Object.prototype.toString.call(array) === "[object Array]")
+        return union ? array.join(union) : array.join();
+    return false;
 };
 
 Orion.separar = function(array, union){
-    return union ? array.split(union) : array;  
+    if (Object.prototype.toString.call(array) === "[object Array]")
+        return union ? array.split(union) : array;
+    return false;
 };
 
 Orion.combinar = function(){
@@ -758,35 +776,41 @@ Orion.rango = function(inicio, fin, pasos){
 };
 
 Orion.partir = function(array, partes){
-    for (var i = 0, l = array.length, nuevo = []; i < l; nuevo.push(array.slice(i, i += (partes || 1))));
-    return nuevo;
+    if (Object.prototype.toString.call(array) === "[object Array]"){
+        for (var i = 0, l = array.length, nuevo = []; i < l; nuevo.push(array.slice(i, i += (partes || 1))));
+        return nuevo;
+    }
+    return false;
 };
 
 Orion.unico = function(array){
-    var array_filtrado = [];
-    if (!Array.prototype.forEach){
-        var total = array.length;
-        for (var i = 0; i < total; i++)
-            if (!Array.prototype.indexOf){
-                var repeticiones = false;
-                for (var j = i + 1; j < total; j++)
-                    if (array[i] == array[j]){
-                        repeticiones = true;
-                        break;
-                    }
-                if (repeticiones)
-                    array_filtrado.push(array[i]);
-            }
-            else
-                if (array_filtrado.indexOf(array[i]) == -1)
-                    array_filtrado.push(array[i]);
+    if (Object.prototype.toString.call(array) === "[object Array]"){
+        var array_filtrado = [];
+        if (!Array.prototype.forEach){
+            var total = array.length;
+            for (var i = 0; i < total; i++)
+                if (!Array.prototype.indexOf){
+                    var repeticiones = false;
+                    for (var j = i + 1; j < total; j++)
+                        if (array[i] == array[j]){
+                            repeticiones = true;
+                            break;
+                        }
+                    if (repeticiones)
+                        array_filtrado.push(array[i]);
+                }
+                else
+                    if (array_filtrado.indexOf(array[i]) == -1)
+                        array_filtrado.push(array[i]);
+        }
+        else
+            array.forEach(function(valor){
+                if (array_filtrado.indexOf(valor) == -1)
+                    array_filtrado.push(valor);
+            });
+        return array_filtrado;
     }
-    else
-        array.forEach(function(valor){
-            if (array_filtrado.indexOf(valor) == -1)
-                array_filtrado.push(valor);
-        });
-    return array_filtrado;
+    return false;
 };
 
 Orion.enArray = function(dato, array, estricto){
