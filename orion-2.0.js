@@ -602,8 +602,10 @@ Orion.ajax = function(json){
         exito = json.exito,
         error = json.error;
 
-    uri = metodo.toUpperCase() == "GET" ? uri + "?" + datos : uri;
-    datos = metodo.toUpperCase() == "GET" ? null : datos;
+    if (metodo.toUpperCase() == "GET"){
+        uri += "?" + datos;
+        datos = null;
+    }
 
     xhr.open(metodo || "GET", uri, true);
 
