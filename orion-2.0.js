@@ -264,7 +264,7 @@ Orion.prototype = {
         return this; //Retornamos el objeto
     },
 
-    atenuar: function(velocidad){
+    atenuar: function(velocidad, retorno){
         var aplicar = function(objeto){
             var valor = 1, 
                 delta = velocidad == "rapido" ? 0.1 : 0.01,
@@ -275,6 +275,7 @@ Orion.prototype = {
                     if (valor < 0){
                         clearInterval(intervalo); 
                         objeto.style.display = "none";
+                        if (retorno) retorno();
                     }
                 }, tiempo);
         };
@@ -292,7 +293,7 @@ Orion.prototype = {
         return this; //Retornamos el objeto
     },
 
-    emerger: function(velocidad){
+    emerger: function(velocidad, retorno){
         var aplicar = function(objeto){
             if (objeto.style.display == "none" || (objeto.style.opacity.length && Math.round(objeto.style.opacity) === 0)){
                 objeto.style.display = "block";
@@ -302,8 +303,10 @@ Orion.prototype = {
                     intervalo = setInterval(function(){ 
                         valor += delta; 
                         objeto.style.opacity = valor;
-                        if (valor > 1)
+                        if (valor > 1){
                             clearInterval(intervalo);
+                            if (retorno) retorno();
+                        }
                     }, tiempo);
             }
         };
@@ -508,13 +511,8 @@ Orion.prototype = {
         var aplicar = function(objeto){
             for (var i in json){
                 var propiedad = i.indexOf("-") > -1 ? function(){
-                    var vieja = "-" + 
-                                i.substring(
-                                    i.search("-") + 1, 
-                                    i.search("-") + 2
-                                ),
-                        nueva = i.substr(i.search("-") + 1).toUpperCase();
-                    return i.replace(vieja, nueva);
+                    var array = i.split("-");
+                    return array[0] + array[1][0].toUpperCase() + array[1].substr(1);
                 } : i;
                 objeto.style[propiedad] = json[i];
             }
