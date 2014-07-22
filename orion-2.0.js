@@ -338,13 +338,15 @@ Orion.prototype = {
     },
 
     serializar: function(){
-        var query = "";
-            aplicar = function(objeto){
+        var aplicar = function(objeto){
                 if (objeto.tagName == "FORM"){
-                    Array.prototype.forEach.call(objeto.elements, function(elemento){
-                        query += query.length ? "&" + elemento.name + "=" + elemento.value : elemento.name + "=" + elemento.value;
-                    });
-                    return query;
+                    for (var i = 0,
+                             elementos = objeto.elements, 
+                             serializado = [], 
+                             l = elementos.length; 
+                             i < l; 
+                             serializado.push(elementos[i].name + "=" + elementos[i].value), i++);
+                    return serializado.join("&");
                 }
                 else
                     return objeto.name + "=" + objeto.value;
@@ -757,7 +759,7 @@ Orion.rango = function(inicio, fin, pasos){
 
 Orion.partir = function(array, partes){
     for (var i = 0, l = array.length, nuevo = []; i < l; nuevo.push(array.slice(i, i += (partes || 1))));
-        return nuevo;
+    return nuevo;
 };
 
 Orion.unico = function(array){
