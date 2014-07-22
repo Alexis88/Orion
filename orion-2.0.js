@@ -730,9 +730,7 @@ Orion.juntar = function(array, union){
 };
 
 Orion.separar = function(array, union){
-    if (Object.prototype.toString.call(array) === "[object Array]")
-        return union ? array.split(union) : array;
-    return false;
+    return union ? array.split(union) : array;
 };
 
 Orion.combinar = function(){
