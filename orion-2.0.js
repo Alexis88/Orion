@@ -49,7 +49,10 @@ var $ = O = Orion = function(identificador){
             porElemento = function(elemento){
                 var objeto = document.getElementsByTagName(elemento), 
                     tipo = 2;
-                if (!objeto.length) objeto = [elemento];
+                if (!objeto.length){
+                    objeto = elemento;
+                    tipo = 1;
+                }
                 return {
                     objeto: objeto,
                     tipo: tipo
