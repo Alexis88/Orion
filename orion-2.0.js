@@ -49,16 +49,7 @@ var $ = O = Orion = function(identificador){
             porElemento = function(elemento){
                 var objeto = document.getElementsByTagName(elemento), 
                     tipo = 2;
-                if (!objeto.length){
-                    var elementos = document.getElementsByTagName("*"),
-                        total = elementos.length;
-                    for (var i = 0; i < total; i++)
-                        if (elementos[i] == elemento){
-                            objeto = elementos[i];
-                            tipo = 1;
-                            break;
-                        }
-                }
+                if (!objeto.length) objeto = [elemento];
                 return {
                     objeto: objeto,
                     tipo: tipo
@@ -615,7 +606,7 @@ Orion.ajax = function(json){
             var retorno = function(){
                 switch (xhr.status){
                     case 200:
-                        exito(/HTML|JSON/.test(tipo) || !tipo ? xhr.responseText : xhr.responseXML);
+                        exito(tipo == "HTML" || !tipo ? xhr.responseText : tipo == "JSON" ? JSON.parse(xhr.responseText) : xhr.responseXML);
                         break;
                     case 404:
                         error("La dirección brindada no existe");
