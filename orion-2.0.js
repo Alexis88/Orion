@@ -503,18 +503,33 @@ Orion.prototype = {
 
     css: function(json){
         var aplicar = function(objeto){
-            for (var i in json){
-                var propiedad = i.indexOf("-") > -1 ? function(){
-                    var array = i.split("-");
-                    return array[0] + array[1][0].toUpperCase() + array[1].substr(1);
-                } : i;
-                objeto.style[propiedad] = json[i];
+            if (typeof json == "object"){
+                for (var i in json){
+                    var propiedad = i.indexOf("-") > -1 ? function(){
+                        var array = i.split("-");
+                        return array[0] + array[1][0].toUpperCase() + array[1].substr(1);
+                    } : i;
+                    objeto.style[propiedad] = json[i];
+                }
+            }
+            else{
+                var camelCase = /\-[a-z]{1}/g;
+                if (!window.getComputedStyle && json == "float") json = "styleFloat";
+                if (camelCase.test(json)){
+                    json = json.replace(camelCase, function(){
+                        return arguments[0][1].toUpperCase();
+                    });
+                }
+                return window.getComputedStyle ? 
+                       getComputedStyle(objeto)[json] : 
+                       objeto.currentStyle[json];
             }
         };
 
         switch (this.tipo){
             case 1:
-                aplicar(this.objeto);
+                if (typeof json == "object") aplicar(this.objeto);
+                else return aplicar(this.objeto);
                 break;
 
             case 2:
