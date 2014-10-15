@@ -862,3 +862,16 @@ Orion.enArray = function(dato, array, estricto){
   
     return respuesta;
 };
+
+Orion.barajar = function(array){
+    if (Object.prototype.toString.call(array) === "[object Array]"){
+        var length = array.length, random, aux;
+        for (var i = 0; i < length; i++){
+            random = Math.floor(Math.random() * length);
+            aux = array[i];
+            array[i] = array[random];
+            array[random] = aux;
+        }
+    }
+    return array;
+};
