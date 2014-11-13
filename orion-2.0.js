@@ -580,7 +580,7 @@ Orion.prototype = {
 
     clonar: function(profundidad){
         var aplicar = function(objeto){
-            return objeto.cloneNode(profundidad);
+            return objeto.cloneNode(profundidad != undefined ? profundidad : true);
         };
 
         switch (this.tipo){
