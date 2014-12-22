@@ -933,7 +933,7 @@ Orion.filtrar = function(array, funcion){
 };
 
 //STRINGS
-Orion.contar = function(){
+Orion.contarPalabras = function(){
     var args = [].slice.call(arguments),
         trimRegExp = /^\s+|\s+$/g,
         cadena = args[0].replace(trimRegExp, "") || null,
