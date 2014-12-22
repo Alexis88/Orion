@@ -1,4 +1,4 @@
-Orion
+OrionJS
 =====
 
-My JavaScript library
+Framework de JavaScript.
