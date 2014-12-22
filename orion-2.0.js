@@ -501,7 +501,7 @@ Orion.prototype = {
         return this; //Retornamos el objeto
     },
 
-    css: function(json){
+    css: function(json){        
         var aplicar = function(objeto){
             if (typeof json == "object"){
                 for (var i in json){
@@ -592,6 +592,52 @@ Orion.prototype = {
                 return aplicar(this.objeto[0]);
                 break;
         }
+    },
+
+    padres: function(){
+        var argumentos = arguments,
+            aplicar = function(objeto){
+            var objetivo = argumentos.length ? 
+                           document.querySelectorAll(argumentos[0]) : 
+                           document.querySelectorAll("*"), 
+                ancestros = [], 
+                lista = [].slice.call(objetivo), i;
+
+            for (i = objeto.parentNode; i != document; i = i.parentNode)
+                if (lista.indexOf(i) > -1) ancestros.push(i);
+            return ancestros.length > 1 ? ancestros : ancestros[0];
+        };
+
+        switch (this.tipo){
+            case 1:
+                return aplicar(this.objeto);
+                break;
+
+            case 2:
+                return Array.prototype.forEach.call(this.objeto, aplicar);
+                break;
+        }
+    },
+
+    unaVez: function(evento, funcion){
+        var aplicar = function(objeto){
+            objeto.addEventListener(evento, objeto.llamada = function(){
+                funcion();
+                objeto.removeEventListener(evento, objeto.llamada, false);
+            }, false);
+        };
+
+        switch (this.tipo){
+            case 1:
+                aplicar(this.objeto);
+                break;
+
+            case 2:
+                Array.prototype.forEach.call(this.objeto, aplicar);
+                break;
+        }
+
+        return this; //Retornamos el objeto
     }
 };
 
@@ -865,13 +911,57 @@ Orion.enArray = function(dato, array, estricto){
 
 Orion.barajar = function(array){
     if (Object.prototype.toString.call(array) === "[object Array]"){
-        var length = array.length, random, aux;
-        for (var i = 0; i < length; i++){
-            random = Math.floor(Math.random() * length);
+        var total = array.length, aleatorio, aux;
+        for (var i = 0; i < total; i++){
+            aleatorio = Math.floor(Math.random() * total);
             aux = array[i];
-            array[i] = array[random];
-            array[random] = aux;
+            array[i] = array[aleatorio];
+            array[aleatorio] = aux;
         }
     }
     return array;
+};
+
+Orion.filtrar = function(array, funcion){
+    var aux = [] || new Array();
+    for (var i = 0, total = array.length; i < total; i++)
+        if (funcion){
+            if (funcion(array[i])) aux[i] = array[i];
+        }
+        else if (array[i]) aux[i] = array[i];
+    return aux;
+};
+
+//STRINGS
+Orion.contar = function(){
+    var args = [].slice.call(arguments),
+        trimRegExp = /^\s+|\s+$/g,
+        cadena = args[0].replace(trimRegExp, "") || null,
+        formato = args[1] || 0,
+        listaCaracteres = args[2] || null,
+        palabras = "[^a-z'",
+        regexp = listaCaracteres ? 
+                 new RegExp(palabras + listaCaracteres + "]+", "gi") : 
+                 new RegExp(palabras + "]+", "gi"),
+        array = cadena.replace(regexp, " ").replace(trimRegExp, "").split(" "),
+        respuesta = false;
+    
+    if (cadena && typeof cadena === "string"){
+        switch (formato){
+            case 1:
+                respuesta = array;
+                break;
+            
+            case 2:
+                respuesta = {};
+                for (var i = 0, l = array.length; i < l; respuesta[args[0].indexOf(array[i])] = array[i], i++);
+                break;
+            
+            default:case 0:
+                respuesta = array.length;
+                break;
+        }
+    }
+  
+    return respuesta;
 };
