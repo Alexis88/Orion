@@ -1,4 +1,4 @@
 OrionJS
 =====
 
-Framework de JavaScript.
+Librería de JavaScript.
