@@ -1,3 +1,9 @@
+/**
+ * Orion Library
+ * @author  Alexis López Espinoza
+ * @version 3.0 (under construction)
+ */
+
 var $ = function(identi){
 	if (!(this instanceof $)) return new $(identi);
 	this.elem = typeof identi == "string" ? document.querySelectorAll(identi) : identi;
