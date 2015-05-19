@@ -42,25 +42,25 @@ $.prototype = {
 	
 	css: function(){
 		var args = arguments,
-			computed,
-			fn = function(el){
-				if (args.length){			
-		            if (typeof args[0] != "object"){
-				        if (args.length > 1){
-	                        el.style[args[0]] = args[1];
-		    		    }
-		                else{
-							computed = getComputedStyle(el)[args[0]];
-			                return /\d/.test(computed) ? parseInt(computed) : computed;
-		                }	
-		            }		
-		            else{
-				        for (var prop in args[0]){
-                            el.style[prop] = args[0][prop];
-				        }
-		            }
-	            }
-			};
+    			computed,
+    			fn = function(el){
+    				if (args.length){			
+    		            if (typeof args[0] != "object"){
+    				        if (args.length > 1){
+    	                        el.style[args[0]] = args[1];
+    		    		    }
+    		                else{
+    							computed = getComputedStyle(el)[args[0]];
+    			                return /\d/.test(computed) ? parseInt(computed) : computed;
+    		                }	
+    		            }		
+    		            else{
+    				        for (var prop in args[0]){
+                                el.style[prop] = args[0][prop];
+    				        }
+    		            }
+    	            }
+    			};
 		return this.verify(this, this.elem, fn, args.length, true);
 	},
 	
