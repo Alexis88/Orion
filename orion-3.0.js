@@ -163,11 +163,12 @@ $.ajax = function(obj){
 	this.xhr = new XMLHttpRequest();
 	this.url = obj.url;
 	this.data = obj.data || null;
-	this.type = obj.type || "GET";
+	this.type = obj.type ? obj.type.toUpperCase() : "GET";
 	this.async = obj.async || true;
 	this.dataType = obj.dataType ? obj.dataType.toUpperCase() : "HTML";
 	this.header = obj.header || "application/x-www-form-urlencoded";
 	this.response = null;
+	this.prepare();
 	this.promise = new Promise(function(resolve, reject){
 		self.xhr.open(self.type, self.url, self.async);
 		self.xhr.setRequestHeader("Content-Type", self.header);
@@ -224,7 +225,7 @@ $.ajax.prototype = {
 					aux.push(prop + "=" + this.data[prop]);
 				}
 				this.url += "?" + aux.join("&");
-			}
+			}			
 			this.data = null;
 		}
 		else{
