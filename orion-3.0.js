@@ -23,7 +23,7 @@ $.prototype = {
 		 * @param	number			a 	(total of method's arguments)
 		 * @param	boolean			p 	(chaining) [see the notes]
 		 */
-
+ 
 		 /*
 			NOTES:
 
