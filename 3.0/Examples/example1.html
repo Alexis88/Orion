@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset = "utf-8" />
+  <title>OrionJS 3.0</title>
+</head>
+<body>
+	<div></div>
+	<input  />
+	<label id = "bar"></label>
+	<span class = "x"></span>
+	<span class = "x"></span>
+	<script type = "text/javascript" src = "orion-3.0.min.js"></script>
+	<script type = "text/javascript">
+	$("div").css("height", "150px").val("foo");
+	$("div").css({
+		width: "150px",
+		background: "red",
+		"margin-top": "50px",
+		marginLeft: "25px"
+	});
+	console.log($("div").css("height"));
+	$(".x, input").val("fu");
+	$("#bar").val("label");
+	$(".x").val("span");
+	console.log($("#bar").val());
+	$("input").val("FOO").css("color", "green");
+	$("div").on("click", function(){
+	    $(this).css("background", "green");
+	});
+	setTimeout(function(){
+		$("div, input, .x, #bar").val("A");
+	}, 1500);
+	</script>
+</body>
+</html>
