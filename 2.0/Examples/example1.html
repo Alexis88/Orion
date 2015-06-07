@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang = "es">
+<head>
+	<meta charset = UTF-8 />
+	<title>XMLHttpRequest</title>
+	<style type="text/css">
+	.ejemplo{
+		background: green;
+		color: white;
+		font-size: 1.5em;
+	}
+
+	.img{
+		display: none; 
+		opacity: 0;
+	}
+
+	.miClase{
+	    background: green;
+	    color: white;
+	}
+	</style>
+</head>
+<body>
+	<form id = "ejemplo" method = "post" action = "example2.php">
+		Nombre: <input type = "text" id = "nombre" name = "nombre" /> <br />
+		Edad: <input type = "text" id = "edad" name = "edad" /> <br />
+		<input type = "submit" value = "Enviar" />
+	</form>
+
+	<button id = "y">Hello</button>
+	<button id = "x">Hola</button>
+
+	<p id = "salida"></p>
+	<p id = "salida2"></p>
+	<p id = "salida3"></p>
+
+	<div>Hola</div>
+	<div>Mundo</div>
+
+	<button id = "a">Cambiar mi clase</button>
+
+	<button class = "pruebas">Probando</button>
+	<button class = "pruebas">Sigo probando</button>
+
+	Ingrese un número: <input type = "text" id = "xyz" autofocus />
+	<button id = "abc">Comprobar</button>
+
+	<table>
+		<tr>
+			<td>
+				<div>
+					<div>
+						<div>
+							<input type = "text" id = "foo" />
+						</div>
+					</div>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div>
+					<div class = "baz">
+						<div>
+							<input type = "text" id = "bar" />
+						</div>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
+
+	<script language = "javascript" type = "text/javascript" src = "orion-2.0.js"></script>
+	<script language = "javascript" type = "text/javascript">
+		Orion("#ejemplo").enviar(function(e){
+			e.preventDefault();
+			Orion.ajax({
+				uri: Orion(this).prop("action"),
+				metodo: Orion(this).prop("method"),
+				tipo: "HTML",
+				datos: Orion(this).serializar(),
+				espera: function(){
+					Orion("#salida").atenuar("lento");
+				},
+				exito: function(respuesta){
+					Orion("#salida").emerger("lento").valor(respuesta);
+					/*Orion("#salida2").emerger("lento").valor(respuesta);
+					Orion("#salida3").emerger("lento").valor(respuesta);*/
+				},
+				error: function(textoError){
+					Orion("#salida").emerger("lento").valor(textoError);
+				}
+			});
+		});
+
+		$("#x").clic(function(){
+			O(this).css({
+				background: "red",
+				color: "white",
+				"font-weight": "bold"
+			});
+
+			var enlace = document.createElement("a");
+			enlace.href = "http://www.google.com.pe";
+			enlace.innerHTML = "Google";
+
+			Orion("div")
+				.css({"border": ".1em lightgray solid"})
+				.clic(function(){alert(Orion(this).valor())})
+				.adherir(enlace)
+				.clase("ejemplo");
+			
+			/*	
+			if (Orion("#nombre").email())
+				alert ("Es un email válido");
+			else
+				alert ("No es un email válido");
+			*/
+			
+			var a = [1, 2, 3, 4, 5, 2];
+			Orion.quitar(a, [2, 4], [8, 9]);
+			console.log(a);
+
+			var b = [23, 65, 74];
+			Orion.agregar(b, 43, 48, 59);
+			console.log(b);
+			
+			var c = [9, 8, 7];
+			Orion.quitar(c, 9, 10);
+			console.log(c);
+
+			console.log(Orion.copiar([1, 2, 3, 4, 5], 2, 4));
+			console.log(Orion.ordenarAsc([5, 2, 6, 3]));
+			console.log(Orion.ordenarDesc([5, 2, 6, 3]));
+
+			console.log(O(this));
+
+			console.log(Orion.separar("1,2,3", ","));
+
+			console.log(Orion.combinar([1,2,3], [4,5,"6"], [7,8,9]));
+
+			Orion("body").adherir(Orion("form").clonar(true));
+
+			var array = Orion.partir([1, 2, 3, 4, 5], 3);
+			for (var i in array) console.log(array[i]);
+
+			Orion("body form #edad").css({
+				background: "lightgreen"
+			});
+
+			Orion("[type=submit]").css({
+				background: "yellow"
+			});
+
+			console.log(Orion.barajar([1, 2, 3, 4, 5]));
+		});
+
+		Orion("#y").clic(function(){
+			console.log(Orion("div").valor());
+		});
+
+		Orion("#a").clic(function(){
+		    Orion(this).clase("miClase");
+		});
+
+		Orion(".pruebas").clic(function(){
+			console.log(Orion.filtrar([0, 5, 3, 0, 7, 2, "", null]));
+
+			var foo = "Hello fri3nd, you're looking   good     today!";
+			console.log(Orion.contarPalabras(foo));
+			console.log(Orion.contarPalabras(foo, 0));
+			console.log(Orion.contarPalabras(foo, 1));
+			console.log(Orion.contarPalabras(foo, 2));
+			console.log(Orion.contarPalabras(foo, 2, "0-9!"));
+
+			Orion(Orion("#foo").padres("tr")).css({
+				background: "red"
+			});
+		});
+
+		Orion(".pruebas").unaVez("click", function(){
+		    alert("You will only see this once");
+		});
+
+		console.log(Orion("#x").css("background-color"));
+		
+		console.log("======================");
+		console.log(Orion.rango(1, 20, 2));
+		console.log(Orion.rango(1, 20));
+		console.log("======================");
+
+		console.log("ÚNICO", Orion.unico([1, 1, 1, 2, 2, 5]));
+		console.log("EN ARRAY NO ESTRICTO", Orion.enArray(1, [1, 2, 3]));
+		console.log("EN ARRAY ESTRICTO", Orion.enArray(1, ["1", 2, 3], true));
+
+		console.log("=========================================");
+		var foo = "Hello fri3nd, you're looking   good     today!";
+			console.log(Orion.contarPalabras(foo));
+			console.log(Orion.contarPalabras(foo, 0));
+			console.log(Orion.contarPalabras(foo, 1));
+			console.log(Orion.contarPalabras(foo, 2));
+			console.log(Orion.contarPalabras(foo, 2, "0-9!"));
+
+			Orion(Orion("#foo").padres("tr")).css({
+				background: "red"
+			});
+	</script>
+</body>
+</html>
