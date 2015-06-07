@@ -1,5 +1,5 @@
 /**
- *	Orion JS
+ *	OrionJS
  *
  *	@author		Alexis López Espinoza
  *	@version	3.0
