@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset = "utf-8" />
+	<title>Ajax</title>
+	<style type = "text/css">
+		#foo{
+			background: lightsteelblue;
+			border: .1rem solid;
+			width: 250px;
+			height: 175px;
+		}
+	</style>
+	<script type = "text/javascript" src = "orion-3.0.js"></script>
+	<script type = "text/javascript">
+		$.ready(function(){
+			$("form").on("submit", function(event){
+				event.preventDefault();			
+				$.ajax({
+					url: $(this).prop("action"),
+					type: $(this).prop("method"),
+					data: $(this).serialize()
+				}).done(function(response){
+					$("#foo").val(response);
+				}).fail(function(failText){
+					$("#foo").val(failText);
+				});
+			});
+
+			$("label").css("background", "lightgreen");
+			$("label").on("click", function(){
+				$(this).foo();
+			});
+		});
+
+		(function($){
+			$.extender({
+				foo: function(){
+					this.css("background", "lightyellow");
+					$("#foo").adherir("<input>", "<textarea></textarea>");					
+					$("<textarea>Hola</textarea><p>Hola</p><input value = 'Hola' />").css("background", "red");
+				}
+			});
+		})(OrionJS)
+	</script>
+</head>
+<body>
+	<form method = "post" action = "ajax.php">
+		Ingrese un valor: <input type = "text" name = "valor" />
+		<input type = "submit" />
+	</form>
+	<div id = "foo"></div>
+
+	<label>ABC</label>
+	<label>ABC</label>
+	<label>ABC</label>
+</body>
+</html>
