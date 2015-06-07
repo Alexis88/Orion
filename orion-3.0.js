@@ -10,7 +10,20 @@
 
 var $ = OrionJS = function(identi){
 	if (!(this instanceof $)) return new $(identi);
-	this.elem = typeof identi == "string" ? document.querySelectorAll(identi) : identi;
+	this.elem = typeof identi == "string" ? 
+				(/<.*>/g.test(identi) ? 
+					(function(){
+						var last = document.body.lastChild,
+							pos = [].indexOf.call(document.body.childNodes, last),
+							part = [],
+							nodes;
+						document.body.insertAdjacentHTML("beforeend", identi);
+						nodes = document.body.childNodes;
+						for (var i = pos + 1, l = nodes.length; i < l; part.push(nodes[i]), i++);
+						return part;
+					})() : 
+					document.querySelectorAll(identi)) 
+				: identi;
 	return this;
 };
 
@@ -52,7 +65,7 @@ $.prototype = {
 		 */
 
 		if (e){
-			if (/NodeList/.test({}.toString.call(e))){
+			if (/(NodeList|Array)/.test({}.toString.call(e))){
 				if (e.length === 1){
 					/*	1
 					
@@ -164,7 +177,7 @@ $.prototype = {
 	},
 
 	adherir: function(){
-		var args = arguments, query = [],
+		var args = arguments,
 			fn = function(el){
 				for (var i in args){
 					if (typeof args[i] == "object"){
@@ -176,17 +189,25 @@ $.prototype = {
 				}
 			};
 		return this.verify(this, this.elem, fn, args.length, false);
+	},
+
+	clonar: function(){
+		var args = arguments,
+			fn = function(el){
+				return arguments[0] === true ? el.cloneNode(true) : el.cloneNode();
+			};
+		return this.verify(this, this.elem, fn, args.length, false);
 	}
 };
 
-/////////////////////////////////////////// DOM ///////////////////////////////////////////
+///////////////////////////////////////////// DOM /////////////////////////////////////////////
 
 //Método para ejecutar la función pasada como parámetro cuando haya cargado el DOM
 $.ready = function(fn){
 	document.addEventListener("DOMContentLoaded", fn, false);
 };
 
-//////////////////////////////////// MÓDULO DE EXTENSIÓN ////////////////////////////////////
+///////////////////////////////////// MÓDULO DE EXTENSIÓN /////////////////////////////////////
 
 $.extender = function(params){
 	for (var i in params){
@@ -194,7 +215,7 @@ $.extender = function(params){
 	}
 }
 
-/////////////////////////////////////////// AJAX ///////////////////////////////////////////
+///////////////////////////////////////////// AJAX /////////////////////////////////////////////
 
 $.ajax = function(obj){
 	if (!(this instanceof $.ajax)) return new $.ajax(obj);
