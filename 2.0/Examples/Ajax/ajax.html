@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang = "es">
+<head>
+	<meta charset = UTF-8 />
+	<title>XMLHttpRequest</title>
+	<style type="text/css">
+	img{
+		display: none;
+		opacity: 0;
+	}
+	</style>
+</head>
+<body>
+	<label for = "caja" accesskey = "caja">Ingrese un texto:</label>
+	<input type = "text" id = "caja" name = "caja" autofocus />
+	<button id = "enviar">Enviar</button>
+	<input type = "hidden" id = "escondido" value = 5 />
+
+	<p id = "salida"></p>
+	<img src = "../Formulario/juancho.gif" />
+
+	<script language = "javascript" type = "text/javascript" src = "orion-2.0.js"></script>
+	<script language = "javascript" type = "text/javascript">
+		Orion("#enviar").clic(function(){
+			Orion.ajax({
+				uri: "ajax.php",
+				metodo: "POST",
+				tipo: "HTML",
+				datos: Orion("#caja").serializar(),
+				espera: function(){
+					Orion("img").emerger("lento");
+					Orion("#salida").atenuar("lento");
+				},
+				exito: function(respuesta){
+					Orion("img").atenuar("lento");	
+					Orion("#salida").emerger("lento");
+					Orion("#salida").valor(respuesta);
+				},
+				error: function(textoError){
+					Orion("img").atenuar("lento");	
+					Orion("#salida").emerger("lento");
+					Orion("#salida").valor(textoError);
+				}
+			});
+		});
+	</script>
+</body>
+</html>
