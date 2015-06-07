@@ -23,7 +23,7 @@ $.prototype = {
 		 * @param	number			a 	(total of method's arguments)
 		 * @param	boolean			p 	(chaining) [see the notes]
 		 */
- 
+
 		 /*
 			NOTES:
 
@@ -160,7 +160,22 @@ $.prototype = {
 				});
 				return query.join("&");
 			};
-		return this.verify(this, this.elem, fn, args.length, false);	
+		return this.verify(this, this.elem, fn, args.length, false);
+	},
+
+	adherir: function(){
+		var args = arguments, query = [],
+			fn = function(el){
+				for (var i in args){
+					if (typeof args[i] == "object"){
+						el.appendChild(args[i]);
+					}
+					else{
+						el.insertAdjacentHTML("beforeend", args[i]);	
+					}
+				}
+			};
+		return this.verify(this, this.elem, fn, args.length, false);
 	}
 };
 
@@ -170,6 +185,14 @@ $.prototype = {
 $.ready = function(fn){
 	document.addEventListener("DOMContentLoaded", fn, false);
 };
+
+//////////////////////////////////// MÓDULO DE EXTENSIÓN ////////////////////////////////////
+
+$.extender = function(params){
+	for (var i in params){
+		$.prototype[i] = params[i];
+	}
+}
 
 /////////////////////////////////////////// AJAX ///////////////////////////////////////////
 
