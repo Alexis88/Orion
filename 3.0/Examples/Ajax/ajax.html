@@ -32,14 +32,24 @@
 				$(this).foo();
 			});
 		});
-		
-		//Extensión
+
 		(function($){
 			$.extender({
 				foo: function(){
 					this.css("background", "lightyellow");
 					$("#foo").adherir("<input>", "<textarea></textarea>");					
 					$("<textarea>Hola</textarea><p>Hola</p><input value = 'Hola' />").css("background", "red");
+					$("#foo").efecto({
+						background: "yellow"
+					}, 1500, "ease-in", function(){
+						$(this).efecto({
+							background: "red"
+						}, 1250, function(){
+							$(this).efecto({
+								background: "green"
+							}, 1100);
+						});
+					});
 				}
 			});
 		})(OrionJS)
