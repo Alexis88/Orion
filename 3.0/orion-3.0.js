@@ -15,11 +15,9 @@ var $ = OrionJS = function(identi){
 					(function(){
 						var last = document.body.lastChild,
 							pos = [].indexOf.call(document.body.childNodes, last),
-							part = [],
-							nodes;
+							part = [];
 						document.body.insertAdjacentHTML("beforeend", identi);
-						nodes = document.body.childNodes;
-						for (var i = pos + 1, l = nodes.length; i < l; part.push(nodes[i]), i++);
+						for (var i = pos + 1, nodes = document.body.childNodes, l = nodes.length; i < l; part.push(nodes[i]), i++);
 						return part;
 					})() : 
 					document.querySelectorAll(identi)) 
@@ -65,6 +63,7 @@ $.prototype = {
 		 */
 
 		if (e){
+			//Array de elementos o lista de nodos
 			if (/(NodeList|Array)/.test({}.toString.call(e))){
 				if (e.length === 1){
 					/*	1
@@ -95,6 +94,7 @@ $.prototype = {
 					[].forEach.call(e, f);
 				}
 			}
+			//Un elemento
 			else{
 				if ((a === 1 && p) || !a){ 	//1
 					return f(e);
@@ -196,6 +196,42 @@ $.prototype = {
 			fn = function(el){
 				return arguments[0] === true ? el.cloneNode(true) : el.cloneNode();
 			};
+		return this.verify(this, this.elem, fn, args.length, false);
+	},
+
+	efecto: function(){
+		var args = arguments, props = [], self = this, 
+			easing = args.length > 2 && typeof args[2] == "string" ? args[2] : "ease",
+			callback = (function(){
+				var response;
+				switch (args.length){
+					case 3:
+						response = typeof args[2] == "function" ? args[2] : null;
+						break;
+					case 4:
+						response = typeof args[3] == "function" ? args[3] : null;
+						break;
+					default:
+						response = null;
+						break;
+				}
+				return response;
+			})(), 
+			fn = function(el){
+				for (var i in args[0]){
+					el.style[i] = args[0][i];
+					props.push(i);
+				}
+				el.style.transitionProperty = props.join(", ");
+				el.style.transitionDuration = (args[1] / 1000) + "s";
+				el.style.timingFunction = easing;
+			};
+
+			if (callback){
+				setTimeout(function(){
+					callback.call(self.elem);
+				}, args[1]);
+			}
 		return this.verify(this, this.elem, fn, args.length, false);
 	}
 };
