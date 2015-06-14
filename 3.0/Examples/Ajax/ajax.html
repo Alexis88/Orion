@@ -11,7 +11,7 @@
 			height: 175px;
 		}
 	</style>
-	<script type = "text/javascript" src = "orion-3.0.js"></script>
+	<script type = "text/javascript" src = "orion-3.0.min.js"></script>
 	<script type = "text/javascript">
 		$.ready(function(){
 			$("form").on("submit", function(event){
@@ -31,6 +31,28 @@
 			$("label").on("click", function(){
 				$(this).foo();
 			});
+
+			$("[name=valor]").enfocado(function(){
+				$(this).efecto({
+					background: "lightcyan"
+				}, 1500);
+			}).desenfocado(function(){
+				$(this).efecto({
+					background: "lightgreen"
+				}, 1500);
+			});
+
+			$("#a").on("click", function(){
+				$("#foo").mostrar(function(){
+					console.log("Mostrar completado");
+				});
+			});
+
+			$("span:last-child").on("click", function(){
+				$("#foo").ocultar("lento", function(){
+					console.log("Ocultar completado");
+				});
+			});			
 		});
 
 		(function($){
@@ -65,5 +87,7 @@
 	<label>ABC</label>
 	<label>ABC</label>
 	<label>ABC</label>
+	<span id = "a">Mostrar</span>
+	<span>Ocultar</span>
 </body>
 </html>
