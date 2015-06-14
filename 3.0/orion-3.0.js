@@ -8,7 +8,9 @@
  *	@return		object					El/los elemento/s bajo el contexto de la función OrionJS
  */
 
-var $ = OrionJS = function(identi){
+"use strict";
+
+var OrionJS = function(identi){
 	if (!(this instanceof $)) return new $(identi);
 	this.elem = typeof identi == "string" ? 
 				(/<.*>/g.test(identi) ? 
@@ -23,7 +25,7 @@ var $ = OrionJS = function(identi){
 					document.querySelectorAll(identi)) 
 				: identi;
 	return this;
-};
+}, $ = OrionJS;
 
 $.prototype = {
 	verify: function(t, e, f, a, p){
@@ -216,11 +218,14 @@ $.prototype = {
 						break;
 				}
 				return response;
-			})(), 
+			})(), transitionProps,
 			fn = function(el){
 				for (var i in args[0]){
-					el.style[i] = args[0][i];
-					props.push(i);
+					transitionProps = getComputedStyle(el).transitionProperty;
+					if ([].indexOf.call(transitionProps, args[0][i]) < 0){
+						el.style[i] = args[0][i];
+						props.push(i);
+					}
 				}
 				el.style.transitionProperty = props.join(", ");
 				el.style.transitionDuration = (args[1] / 1000) + "s";
@@ -232,6 +237,105 @@ $.prototype = {
 					callback.call(self.elem);
 				}, args[1]);
 			}
+		return this.verify(this, this.elem, fn, args.length, false);
+	},
+
+	enfocado: function(){
+		var args = arguments,
+			fn = function(el){
+				el.addEventListener("focus", args[0], false);
+			};
+		return this.verify(this, this.elem, fn, args.length, false);
+	},
+
+	desenfocado: function(){
+		var args = arguments,
+			fn = function(el){
+				el.addEventListener("blur", args[0], false);
+			};
+		return this.verify(this, this.elem, fn, args.length, false);	
+	},
+
+	mostrar: function(){
+		var args = arguments, tiempo,
+			fn = function(el){
+				if (typeof args[0] === "string" && (isNaN(+args[0]) && !isFinite(+args[0]))){
+					switch (args[0]){
+						case "rapido":
+							tiempo = 150;
+							break;
+
+						case "normal":
+							tiempo = 500;
+							break;
+
+						case "lento":
+							tiempo = 750;
+							break;
+					}					
+				}
+				else if ((typeof args[0] === "string" && (!isNaN(+args[0]) && isFinite(+args[0]))) || typeof args[0] === "number"){
+					tiempo = parseInt(args[0]);
+				}
+				else{
+					tiempo = 400;
+				}
+
+				if (!el.offsetHeight || !getComputedStyle(el).opacity){
+					el.style.display = el.dataset.display || "block";
+					$(el).efecto({
+						opacity: 1,
+						height: el.dataset.height || "auto"
+					}, tiempo, function(){
+						if (args[1] && typeof args[1] === "function") args[1].call(el);
+						if (typeof args[0] === "function") args[0].call(el);
+					});
+				}
+			};
+		return this.verify(this, this.elem, fn, args.length, false);
+	},
+
+	ocultar: function(){
+		var args = arguments, tiempo, 
+			fn = function(el){
+				if (typeof args[0] === "string" && (isNaN(+args[0]) && !isFinite(+args[0]))){
+					switch (args[0]){
+						case "rapido":
+							tiempo = 150;
+							break;
+
+						case "normal":
+							tiempo = 500;
+							break;
+
+						case "lento":
+							tiempo = 750;
+							break;
+					}					
+				}
+				else if ((typeof args[0] === "string" && (!isNaN(+args[0]) && isFinite(+args[0]))) || typeof args[0] === "number"){
+					tiempo = parseInt(args[0]);
+				}
+				else{
+					tiempo = 400;
+				}
+
+				if (el.offsetHeight || +getComputedStyle(el).opacity){
+					if (!el.getAttribute("data-height")){
+						el.setAttribute("data-height", el.offsetHeight + "px");
+						el.setAttribute("data-display", getComputedStyle(el).display);
+					}
+
+					$(el).efecto({
+						opacity: 0,
+						height: 0,
+					}, tiempo, function(){
+						el.style.display = "none";
+						if (args[1] && typeof args[1] === "function") args[1].call(el);
+						if (typeof args[0] === "function") args[0].call(el);
+					});
+				}
+			};
 		return this.verify(this, this.elem, fn, args.length, false);
 	}
 };
