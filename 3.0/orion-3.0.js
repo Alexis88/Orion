@@ -14,16 +14,16 @@ var OrionJS = function(identi){
 	if (!(this instanceof $)) return new $(identi);
 	this.elem = typeof identi == "string" ? 
 				(/<.*>/g.test(identi) ? 
-					(function(){
-						var last = document.body.lastChild,
-							pos = [].indexOf.call(document.body.childNodes, last),
-							part = [];
-						document.body.insertAdjacentHTML("beforeend", identi);
-						for (var i = pos + 1, nodes = document.body.childNodes, l = nodes.length; i < l; part.push(nodes[i]), i++);
-						return part;
-					})() : 
-					document.querySelectorAll(identi)) 
-				: identi;
+				(function(){
+					var last = document.body.lastChild,
+						pos = [].indexOf.call(document.body.childNodes, last),
+						part = [];
+					document.body.insertAdjacentHTML("beforeend", identi);
+					for (var i = pos + 1, nodes = document.body.childNodes, l = nodes.length; i < l; part.push(nodes[i]), i++);
+					return part;
+				})() : 
+				document.querySelectorAll(identi)) 
+			: identi;
 	return this;
 }, $ = OrionJS;
 
