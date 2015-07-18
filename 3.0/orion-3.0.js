@@ -394,22 +394,22 @@ $.ajax = function(obj){
 		self.xhr.open(self.type, self.url, self.async);
 		self.xhr.setRequestHeader("Content-Type", self.header);
 		self.xhr.addEventListener("load", function(){
-			if (self.xhr.status == 200){
+			if (this.status == 200){
 				switch (self.xhr){
 					case "JSON":
-						self.response = JSON.parse(self.xhr.responseText);
+						self.response = JSON.parse(this.responseText);
 						break;
 					case "XML":
-						self.response = self.xhr.responseXML;
+						self.response = this.responseXML;
 						break;
 					case "HTML": default:
-						self.response = self.xhr.responseText;
+						self.response = this.responseText;
 						break;						
 				}
 				resolve(self.response);
 			}
 			else{
-				self.response = "Has ocurred an error: " + self.xhr.statusText;
+				self.response = "An error has occurred: " + self.xhr.statusText;
 				reject(self.response);
 			}
 		}, false);
