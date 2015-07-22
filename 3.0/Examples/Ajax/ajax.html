@@ -11,7 +11,7 @@
 			height: 175px;
 		}
 	</style>
-	<script type = "text/javascript" src = "orion-3.0.min.js"></script>
+	<script type = "text/javascript" src = "orion-3.0.js"></script>
 	<script type = "text/javascript">
 		$.ready(function(){
 			$("form").on("submit", function(event){
@@ -19,9 +19,10 @@
 				$.ajax({
 					url: $(this).prop("action"),
 					type: $(this).prop("method"),
-					data: $(this).serialize()
+					data: $(this).serialize(),
+					dataType: "json"
 				}).done(function(response){
-					$("#foo").val(response);
+					$("#foo").val(response.ans);
 				}).fail(function(failText){
 					$("#foo").val(failText);
 				});
@@ -53,6 +54,8 @@
 					console.log("Ocultar completado");
 				});
 			});			
+
+			$("[name=valor]").enfocar();
 		});
 
 		(function($){
