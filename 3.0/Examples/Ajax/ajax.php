@@ -1,4 +1,4 @@
 <?php
 $dato = $_REQUEST['valor'];
-echo 'El valor enviado es ' . $dato;
+echo json_encode(['ans' => 'El valor enviado es ' . $dato]);
 ?>
