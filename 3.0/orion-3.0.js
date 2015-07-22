@@ -13,17 +13,17 @@
 var OrionJS = function(identi){
 	if (!(this instanceof $)) return new $(identi);
 	this.elem = typeof identi == "string" ? 
-		(/<.*>/g.test(identi) ? 
-		(function(){
-			var last = document.body.lastChild,
-				pos = [].indexOf.call(document.body.childNodes, last),
-				part = [];
-			document.body.insertAdjacentHTML("beforeend", identi);
-			for (var i = pos + 1, nodes = document.body.childNodes, l = nodes.length; i < l; part.push(nodes[i]), i++);
-			return part;
-		})() : 
-		document.querySelectorAll(identi)) 
-	: identi;
+				(/<.*>/g.test(identi) ? 
+					(function(){
+						var last = document.body.lastChild,
+							pos = [].indexOf.call(document.body.childNodes, last),
+							part = [];
+						document.body.insertAdjacentHTML("beforeend", identi);
+						for (var i = pos + 1, nodes = document.body.childNodes, l = nodes.length; i < l; part.push(nodes[i]), i++);
+						return part;
+					})() : 
+					document.querySelectorAll(identi)) 
+				: identi;
 	return this;
 }, $ = OrionJS;
 
@@ -202,10 +202,9 @@ $.prototype = {
 	},
 
 	efecto: function(){
-		var args = arguments, props = [], self = this, 
+		var args = arguments, props = [], self = this, response, 
 			easing = args.length > 2 && typeof args[2] == "string" ? args[2] : "ease",
 			callback = (function(){
-				var response;
 				switch (args.length){
 					case 3:
 						response = typeof args[2] == "function" ? args[2] : null;
@@ -252,6 +251,22 @@ $.prototype = {
 		var args = arguments,
 			fn = function(el){
 				el.addEventListener("blur", args[0], false);
+			};
+		return this.verify(this, this.elem, fn, args.length, false);	
+	},
+
+	enfocar: function(){
+		var args = arguments,
+			fn = function(el){
+				el.focus();
+			};
+		return this.verify(this, this.elem, fn, args.length, false);	
+	},
+
+	desenfocar: function(){
+		var args = arguments,
+			fn = function(el){
+				el.blur();
 			};
 		return this.verify(this, this.elem, fn, args.length, false);	
 	},
@@ -395,7 +410,7 @@ $.ajax = function(obj){
 		self.xhr.setRequestHeader("Content-Type", self.header);
 		self.xhr.addEventListener("load", function(){
 			if (this.status == 200){
-				switch (self.xhr){
+				switch (self.dataType){
 					case "JSON":
 						self.response = JSON.parse(this.responseText);
 						break;
@@ -412,6 +427,10 @@ $.ajax = function(obj){
 				self.response = "An error has occurred: " + self.xhr.statusText;
 				reject(self.response);
 			}
+		}, false);
+		self.xhr.addEventListener("error", function(){
+			self.response = "Has ocurred an error: " + self.xhr.statusText;
+			reject(self.response);
 		}, false);
 		self.xhr.send(self.data);
 	});
