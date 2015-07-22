@@ -452,6 +452,7 @@ $.ajax.prototype = {
 	},
 
 	fail: function(fn){
+		var self = this;
 		if (window.Promise){
 			this.promise.catch(function(error){
 				fn(error);
@@ -459,7 +460,8 @@ $.ajax.prototype = {
 		}
 		else{
 			this.xhr.addEventListener("error", function(){
-				fn(this.response);	
+				self.response = this.statusText;
+				fn(self.response);	
 			}, false);
 		}
 		return this;
