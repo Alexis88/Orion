@@ -493,7 +493,6 @@ $.ajax.prototype = {
 			if (window.Promise) reject(self.response);
 		}, false);
 		self.xhr.send(self.data);
-		return this;
 	}
 };
 
