@@ -405,7 +405,67 @@ $.ajax = function(obj){
 			this.data = aux.join("&");
 		}
 	}
-	this.promise = new Promise(function(resolve, reject){
+
+	if (window.Promise){
+		this.promise = new Promise(function(resolve, reject){
+			self.cross.call(self, resolve, reject);
+		});	
+	}
+	else{
+		self.cross.call(self);
+	}	
+
+	return this;	
+};
+
+//Prototipo del método Ajax
+$.ajax.prototype = {
+	done: function(fn){
+		if (window.Promise){
+			this.promise.then(function(response){
+				fn(response);
+			});	
+		}
+		else{
+			var self = this;
+			this.xhr.addEventListener("load", function(){
+				if (this.status == 200){
+					switch (self.dataType){
+						case "JSON":
+							fn(JSON.parse(this.responseText));
+							break;
+						case "XML":
+							fn(this.responseXML);
+							break;
+						case "HTML": default:
+							fn(this.responseText);
+							break;						
+					}
+				}
+				else{
+					fn("An error has occurred: " + this.statusText);
+				}
+			}, false);
+		}
+		return this;
+	},
+
+	fail: function(fn){
+		if (window.Promise){
+			this.promise.catch(function(error){
+				fn(error);
+			});
+		}
+		else{
+			this.xhr.addEventListener("error", function(){
+				fn(this.response);	
+			}, false);
+		}
+		return this;
+	},
+
+	cross: function(resolve, reject){
+		var self = this;
 		self.xhr.open(self.type, self.url, self.async);
 		self.xhr.setRequestHeader("Content-Type", self.header);
 		self.xhr.addEventListener("load", function(){
@@ -421,36 +481,18 @@ $.ajax = function(obj){
 						self.response = this.responseText;
 						break;						
 				}
-				resolve(self.response);
+				if (window.Promise) resolve(self.response);
 			}
 			else{
-				self.response = "An error has occurred: " + self.xhr.statusText;
-				reject(self.response);
+				self.response = "An error has occurred: " + this.statusText;
+				if (window.Promise) reject(self.response);
 			}
 		}, false);
 		self.xhr.addEventListener("error", function(){
-			self.response = "Has ocurred an error: " + self.xhr.statusText;
-			reject(self.response);
+			self.response = "Has ocurred an error: " + this.statusText;
+			if (window.Promise) reject(self.response);
 		}, false);
 		self.xhr.send(self.data);
-	});
-
-	return this;	
-};
-
-//Prototipo del método Ajax
-$.ajax.prototype = {
-	done: function(fn){
-		this.promise.then(function(response){
-			fn(response);
-		});
-		return this;
-	},
-
-	fail: function(fn){
-		this.promise.catch(function(error){
-			fn(error);
-		});
 		return this;
 	}
 };
