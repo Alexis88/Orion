@@ -432,15 +432,16 @@ $.ajax.prototype = {
 				if (this.status == 200){
 					switch (self.dataType){
 						case "JSON":
-							fn(JSON.parse(this.responseText));
+							self.response = JSON.parse(this.responseText);
 							break;
 						case "XML":
-							fn(this.responseXML);
+							self.response = this.responseXML;
 							break;
 						case "HTML": default:
-							fn(this.responseText);
+							self.response = this.responseText;
 							break;						
 					}
+					fn(self.response)
 				}
 				else{
 					fn("An error has occurred: " + this.statusText);
