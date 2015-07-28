@@ -13,7 +13,7 @@
 var OrionJS = function(identi){
 	if (!(this instanceof $)) return new $(identi);
 	this.elem = typeof identi == "string" ? 
-			(/<.*>/g.test(identi) ? 
+		(/<.*>/g.test(identi) ? 
 			(function(){
 				var last = document.body.lastChild,
 					pos = [].indexOf.call(document.body.childNodes, last),
@@ -23,7 +23,7 @@ var OrionJS = function(identi){
 				return part;
 			})() : 
 			document.querySelectorAll(identi)) 
-			: identi;
+		: identi;
 	return this;
 }, $ = OrionJS;
 
@@ -374,7 +374,7 @@ $.extender = function(params){
 
 $.ajax = function(obj){
 	if (!(this instanceof $.ajax)) return new $.ajax(obj);
-	var self = this;
+	var self = this, aux;
 	this.xhr = new XMLHttpRequest();
 	this.url = obj.url;
 	this.data = obj.data || null;
@@ -387,7 +387,7 @@ $.ajax = function(obj){
 		if (typeof this.data == "string"){
 			this.url += "?" + this.data;				
 		}
-		else if (typeof this.data == "object"){
+		else if ({}.toString.call(this.data) === "[object Object]"){
 			aux = [];
 			for (var prop in this.data){
 				aux.push(prop + "=" + this.data[prop]);
@@ -397,7 +397,7 @@ $.ajax = function(obj){
 		this.data = null;
 	}
 	else{
-		if (typeof this.data == "object"){
+		if ({}.toString.call(this.data) === "[object Object]"){
 			aux = [];
 			for (var prop in this.data){
 				aux.push(prop + "=" + this.data[prop]);
@@ -408,11 +408,11 @@ $.ajax = function(obj){
 
 	if (window.Promise){
 		this.promise = new Promise(function(resolve, reject){
-			self.cross.call(self, resolve, reject);
+			self.cross(resolve, reject);
 		});	
 	}
 	else{
-		self.cross.call(self);
+		self.cross();
 	}	
 
 	return this;	
@@ -441,11 +441,11 @@ $.ajax.prototype = {
 							self.response = this.responseText;
 							break;						
 					}
-					fn(self.response)
 				}
 				else{
-					fn("An error has occurred: " + this.statusText);
+					self.response = this.statusText;					
 				}
+				fn(self.response);
 			}, false);
 		}
 		return this;
