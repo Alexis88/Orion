@@ -352,6 +352,23 @@ $.prototype = {
 				}
 			};
 		return this.verify(this, this.elem, fn, args.length, false);
+	},
+
+	padres: function(){
+		var args = arguments, ancestros = [], objetivo = [], 
+			fn = function(el){
+				objetivo = args.length ? 
+						   document.querySelectorAll(args[0]) : 
+						   document.querySelectorAll("*");
+
+	            for (var i = el.parentNode; i != document; i = i.parentNode){
+	                if ([].indexOf.call(objetivo, i) > -1){ 
+	                	ancestros.push(i);
+	                }
+	            }
+	            return ancestros.length > 1 ? ancestros : ancestros[0];
+			};
+		return this.verify(this, this.elem, fn, args.length, false);
 	}
 };
 
