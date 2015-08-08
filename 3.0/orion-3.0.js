@@ -31,7 +31,7 @@ $.prototype = {
 	verify: function(t, e, f, a, p){
 		/**
 		 * @param	object			t 	($ object)
-		 * @param	Node|NodeList	e 	(element or elements collection)
+		 * @param	Node|NodeList		e 	(element or elements collection)
 		 * @param	function 		f 	(function to execute)
 		 * @param	number			a 	(total of method's arguments)
 		 * @param	boolean			p 	(chaining) [see the notes]
