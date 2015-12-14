@@ -13,24 +13,32 @@
 	</style>
 	<script type = "text/javascript" src = "orion-3.0.js"></script>
 	<script type = "text/javascript">
-		$.ready(function(){
-			$("form").on("submit", function(event){
+		$.ready(function(){			
+			$.impArray([1, 2, [3]], $("<div>"));
+			$.impArray([4, 5, [6]], document.querySelector("label"));
+			$.impArray([7, 8, [{9: 9}]], $("<pre>"));
+			$("form:first-child").on("submit", function(event){
 				event.preventDefault();			
-				$.ajax({
+				var promesa = $.ajax({
 					url: $(this).prop("action"),
 					type: $(this).prop("method"),
 					data: $(this).serialize(),
 					dataType: "json"
-				}).done(function(response){
+				})
+
+				promesa.done(function(response){
 					$("#foo").val(response.ans);
 				}).fail(function(failText){
 					$("#foo").val(failText);
 				});
 			});
 
+			$("form input").sigue();
+
 			$("label").css("background", "lightgreen");
 			$("label").on("click", function(){
 				$(this).foo();
+				console.dir($(this).css());
 			});
 
 			$("[name=valor]").enfocado(function(){
@@ -49,13 +57,19 @@
 				});
 			});
 
-			$("span:last-child").on("click", function(){
+			$("span:nth-of-type(2)").on("click", function(){
 				$("#foo").ocultar("lento", function(){
 					console.log("Ocultar completado");
 				});
-			});			
+			});
 
-			$("[name=valor]").enfocar();
+			$("span:last-of-type").on("click", function(){				
+				$("[name=valor]").enfocar();
+			});
+
+			console.log($("span:last-child"));
+
+			console.log($("[name=valor]").padres());
 		});
 
 		(function($){
@@ -85,6 +99,12 @@
 		Ingrese un valor: <input type = "text" name = "valor" />
 		<input type = "submit" />
 	</form>
+	<form>
+		<input />
+		<input />
+		<input />
+		<input />
+	</form>
 	<div id = "foo"></div>
 
 	<label>ABC</label>
@@ -92,5 +112,6 @@
 	<label>ABC</label>
 	<span id = "a">Mostrar</span>
 	<span>Ocultar</span>
+	<span>Delegar</span>
 </body>
 </html>
