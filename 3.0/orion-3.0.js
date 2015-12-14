@@ -31,7 +31,7 @@ $.prototype = {
 	verify: function(t, e, f, a, p){
 		/**
 		 * @param	object			t 	($ object)
-		 * @param	Node|NodeList		e 	(element or elements collection)
+		 * @param	Node|NodeList	e 	(element or elements collection)
 		 * @param	function 		f 	(function to execute)
 		 * @param	number			a 	(total of method's arguments)
 		 * @param	boolean			p 	(chaining) [see the notes]
@@ -43,7 +43,7 @@ $.prototype = {
 			Método .css(): [p = true]
 
 			- Sin argumentos: (1)
-				$("#foo").css(); //'f' no devuelve valores y no permite encadenar
+				$("#foo").css(); //'f' devuelve el conjunto de estilos computados y no permite encadenar
 			- Con un argumento: (1)
 				$("#foo").css("height"); //'f' retorna el valor de 'height' y no permite encadenar
 			- Con más de un argumento: (2.2)
@@ -128,6 +128,9 @@ $.prototype = {
                             el.style[prop] = args[0][prop];
 				        }
 		            }
+	            }
+	            else{
+	            	return window.getComputedStyle(el);
 	            }
 			};
 		return this.verify(this, this.elem, fn, args.length, true);
@@ -354,13 +357,20 @@ $.prototype = {
 		return this.verify(this, this.elem, fn, args.length, false);
 	},
 
+	padre: function(){
+		var args = arguments,
+			fn = function(el){
+				return el.parentNode;
+			};
+		return this.verify(this, this.elem, fn, args.length, true);	
+	},
+
 	padres: function(){
 		var args = arguments, ancestros = [], objetivo = [], 
 			fn = function(el){
 				objetivo = args.length ? 
 						   document.querySelectorAll(args[0]) : 
-						   document.querySelectorAll("*");
-
+						   document.querySelectorAll("*");				
 	            for (var i = el.parentNode; i != document; i = i.parentNode){
 	                if ([].indexOf.call(objetivo, i) > -1){ 
 	                	ancestros.push(i);
@@ -368,8 +378,28 @@ $.prototype = {
 	            }
 	            return ancestros.length > 1 ? ancestros : ancestros[0];
 			};
-		return this.verify(this, this.elem, fn, args.length, false);
-	}
+		return this.verify(this, this.elem, fn, args.length, true);
+	},
+
+	sigue: function(){
+		var args = arguments,
+			fn = function(el){
+				el.addEventListener("keypress", function(event){
+					if (event.keyCode == 13){
+						event.preventDefault();
+					    if (!this.nextElementSibling || this.nextElementSibling.constructor != this.constructor){
+					    	if ($(this).padres("form")){
+			                	$(this).padres("form").elements[0].focus();
+					    	}
+					    }
+			            else{
+			                this.nextElementSibling.focus();
+			            }
+			        }
+			    }, false);
+			};
+		return this.verify(this, this.elem, fn, args.length, false);	
+	},
 };
 
 ///////////////////////////////////////////// DOM /////////////////////////////////////////////
@@ -739,6 +769,46 @@ $.filtrar = function(array, funcion){
         else if (array[i]) aux[i] = array[i];
     return aux;
 };
+
+$.impArray = function(array, out, cont){
+	var s = "<br />", j = 0, type = {}.toString.call(array), 
+        aux = array ? array.length || Object.keys(array).length : 0;
+
+    cont = cont || 0;
+    type = type.split(" ")[1].substr(0, type.split(" ")[1].length - 1);
+
+	if (!cont){
+		out = "innerHTML" in out ? $(out) : out;
+		out.val(type + s + tab(cont) + "(" + s);
+	}
+
+    for (var i in array){
+    	type = {}.toString.call(array[i]);
+        type = type.split(" ")[1].substr(0, type.split(" ")[1].length - 1);
+		if (/Object|Array/.test(type)){
+			out.val(out.val() + tab(cont + 1) + "[" + i + "] => " + type + s + tab(cont + 1) + "(" + s);
+			$.impArray(array[i], out, cont + 1);
+			if (j++ == aux - 1){
+				out.val(out.val() + tab(cont) + ")" + s);
+			}
+		}
+        else{
+			out.val(out.val() + tab(cont + 1) + "[" + i + "] => " + array[i] + s);
+			if (j++ == aux - 1){
+				out.val(out.val() + tab(cont) + ")" + s);
+			}
+		}
+	}
+
+	if (!aux){
+		out.val(out.val() + tab(cont) + ")" + s);
+	}
+
+	function tab(n){
+		for (var j = 0, f = "", t = "&emsp;&emsp;"; j < n; f += t, j++);
+		return f;
+	}
+}
 
 /////////////////////////////////////////// CADENAS ///////////////////////////////////////////
 
