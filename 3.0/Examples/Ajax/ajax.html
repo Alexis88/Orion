@@ -24,7 +24,7 @@
 					type: $(this).prop("method"),
 					data: $(this).serialize(),
 					dataType: "json"
-				})
+				});
 
 				promesa.done(function(response){
 					$("#foo").val(response.ans);
@@ -67,8 +67,6 @@
 				$("[name=valor]").enfocar();
 			});
 
-			console.log($("span:last-child"));
-
 			console.log($("[name=valor]").padres());
 		});
 
@@ -76,7 +74,7 @@
 			$.extender({
 				foo: function(){
 					this.css("background", "lightyellow");
-					$("#foo").adherir("<input>", "<textarea></textarea>");					
+					$("#foo").adherir("<input>", "<textarea></textarea>");			
 					$("<textarea>Hola</textarea><p>Hola</p><input value = 'Hola' />").css("background", "red");
 					$("#foo").efecto({
 						background: "yellow"
