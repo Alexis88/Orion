@@ -222,16 +222,16 @@ $.prototype = {
 				return response;
 			})(), transitionProps,
 			fn = function(el){
+				el.style.transitionProperty = props.join(", ");
+				el.style.transitionDuration = (args[1] / 1000) + "s";
+				el.style.timingFunction = easing;
 				for (var i in args[0]){
 					transitionProps = getComputedStyle(el).transitionProperty;
 					if ([].indexOf.call(transitionProps, args[0][i]) < 0){
 						el.style[i] = args[0][i];
 						props.push(i);
 					}
-				}
-				el.style.transitionProperty = props.join(", ");
-				el.style.transitionDuration = (args[1] / 1000) + "s";
-				el.style.timingFunction = easing;
+				}				
 			};
 
 			if (callback){
